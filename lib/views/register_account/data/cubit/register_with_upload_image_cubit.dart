@@ -10,7 +10,8 @@ part 'register_with_upload_image_state.dart';
 
 class RegisterWithUploadImageCubit extends Cubit<RegisterWithUploadImageState> {
   RegisterWithUploadImageCubit() : super(RegisterWithUploadImageInitial());
-    String? url; 
+    String? url;
+    String? sellerOrBuyer; 
     File? file;
     TextEditingController userNameController = TextEditingController();
     uploadImage() async{
@@ -40,6 +41,7 @@ class RegisterWithUploadImageCubit extends Cubit<RegisterWithUploadImageState> {
           'id': FirebaseAuth.instance.currentUser!.uid,
           'username': userNameController.text,
           'url': url,
+          'sellerorbuyer' : sellerOrBuyer,
         });
         emit(RegisterWithUploadImageSuccess());
       }catch(errorMessage){

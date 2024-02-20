@@ -36,6 +36,7 @@ class SignInScreen extends StatelessWidget {
                 if (state is SignInEmailSuccess) {
                   showCustomSnackbar(
                       context, 'Success', ColorsManager.mainGreen);
+                  Navigator.pushNamed(context, Routes.registerAccount);
                       
                 } else if (state is SignInEmailFailure) {
                   showCustomSnackbar(context, 'Failed,${state.errorMessage}',
