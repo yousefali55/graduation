@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1085316482928",
+    "project_id": "renting-bceca",
+    "storage_bucket": "renting-bceca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085316482928:android:c7c9e0f848c5949361f1b5",
+        "android_client_info": {
+          "package_name": "com.example.graduation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHMlQh5MhKiOeCpU3C-HOhGm9ylO2Tenc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
