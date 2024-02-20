@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/theming/colors_manager.dart';
 
 class ForgetPassword extends StatelessWidget {
+  final void Function()? onPressed;
   const ForgetPassword({
-    super.key,
+    super.key, this.onPressed,
   });
 
   @override

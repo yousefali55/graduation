@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/mutual_widgets/custom_snack_bar.dart';
 import 'package:graduation/mutual_widgets/elevated_button_for_sign_in_up.dart';
 import 'package:graduation/mutual_widgets/repeated_text_field.dart';
@@ -10,6 +10,7 @@ import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/sign_in/data/cubit/sign_in_email_cubit.dart';
 import 'package:graduation/views/sign_up/data/cubit/sign_up_email_cubit.dart';
+import 'package:graduation/views/sign_up/widgets/send_email_verify.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key});
@@ -27,6 +28,9 @@ class SignUpScreen extends StatelessWidget {
                 if (state is SignUpEmailSuccess) {
                   showCustomSnackbar(
                       context, 'Success', ColorsManager.mainGreen);
+                  sendEmailVerifyAlertDialogue(context, onPressed: (){
+                    FirebaseAuth.instance.currentUser!.sendEmailVerification();
+                  });
                 } else if (state is SignUpEmailFailure) {
                   showCustomSnackbar(context, 'Failed,${state.errorMessage}',
                       ColorsManager.red);

@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/mutual_widgets/custom_snack_bar.dart';
 import 'package:graduation/mutual_widgets/elevated_button_for_sign_in_up.dart';
 import 'package:graduation/mutual_widgets/repeated_text_field.dart';
@@ -28,7 +28,7 @@ class SignInScreen extends StatelessWidget {
         children: [
           Container(
             height: 240.h,
-            child: Center(child: RentingText(fontSize: 50)),
+            child: const Center(child: RentingText(fontSize: 50)),
           ),
           Expanded(
             child: BlocConsumer<SignInEmailCubit, SignInEmailState>(
@@ -36,6 +36,7 @@ class SignInScreen extends StatelessWidget {
                 if (state is SignInEmailSuccess) {
                   showCustomSnackbar(
                       context, 'Success', ColorsManager.mainGreen);
+                      
                 } else if (state is SignInEmailFailure) {
                   showCustomSnackbar(context, 'Failed,${state.errorMessage}',
                       ColorsManager.red);
@@ -78,7 +79,27 @@ class SignInScreen extends StatelessWidget {
                                       .passwordController,
                                 ),
                                 heightSpace(8),
-                                const ForgetPassword(),
+                                ForgetPassword(
+                                  onPressed: () async {
+                                    try {
+                                      await FirebaseAuth.instance
+                                          .sendPasswordResetEmail(
+                                              email: context
+                                                  .read<SignInEmailCubit>()
+                                                  .emailController
+                                                  .text);
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) =>
+                                              Text('Go Check The email'));
+                                    } catch (e) {
+                                      showCustomSnackbar(
+                                          context,
+                                          'Something wrong about ${e.toString()}, try again with correct email',
+                                          ColorsManager.red);
+                                    }
+                                  },
+                                ),
                                 heightSpace(20),
                                 state is SignInEmailLaoding
                                     ? const CircularProgressIndicator(
