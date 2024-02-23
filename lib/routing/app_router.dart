@@ -29,9 +29,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => RegisterWithUploadImageCubit(),
-            child: RegisterAccountScreen(
-              sellerOrBuyer: const [],
-            ),
+            child: const RegisterAccountScreen(),
           ),
         );
       default:

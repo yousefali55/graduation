@@ -11,6 +11,7 @@ import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/sign_in/data/cubit/sign_in_email_cubit.dart';
 import 'package:graduation/views/sign_up/data/cubit/sign_up_email_cubit.dart';
 import 'package:graduation/views/sign_up/widgets/send_email_verify.dart';
+import 'package:lottie/lottie.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key});
@@ -22,13 +23,19 @@ class SignUpScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Center(
+            child: SizedBox(
+              height: 200,
+                child: Lottie.asset(
+                    'assets/images/Animation - 1708700958490.json')),
+          ),
           Expanded(
             child: BlocConsumer<SignUpEmailCubit, SignUpEmailState>(
               listener: (context, state) {
                 if (state is SignUpEmailSuccess) {
                   showCustomSnackbar(
                       context, 'Success', ColorsManager.mainGreen);
-                  sendEmailVerifyAlertDialogue(context, onPressed: (){
+                  sendEmailVerifyAlertDialogue(context, onPressed: () {
                     FirebaseAuth.instance.currentUser!.sendEmailVerification();
                   });
                 } else if (state is SignUpEmailFailure) {
