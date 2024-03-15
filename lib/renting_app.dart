@@ -10,12 +10,12 @@ class RentingApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    return SafeArea(
       child: ScreenUtilInit(
         designSize: const Size(345, 812),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: Routes.signIn,
+          initialRoute: Routes.splash,
           onGenerateRoute: appRouter.generateRoute,
           theme: ThemeData(scaffoldBackgroundColor: ColorsManager.white),
         ),

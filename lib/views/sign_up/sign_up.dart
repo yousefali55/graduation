@@ -8,35 +8,38 @@ import 'package:graduation/mutual_widgets/repeated_text_field.dart';
 import 'package:graduation/mutual_widgets/texts_in_sign_in_up.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
+import 'package:graduation/views/on_board1/on_board1.dart';
 import 'package:graduation/views/sign_in/data/cubit/sign_in_email_cubit.dart';
 import 'package:graduation/views/sign_up/data/cubit/sign_up_email_cubit.dart';
 import 'package:graduation/views/sign_up/widgets/send_email_verify.dart';
-import 'package:lottie/lottie.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({Key? key});
+  const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.mainGreen,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Center(
-            child: SizedBox(
-              height: 200,
-                child: Lottie.asset(
-                    'assets/images/Animation - 1708700958490.json')),
-          ),
-          Expanded(
-            child: BlocConsumer<SignUpEmailCubit, SignUpEmailState>(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: 200.h,
+            ),
+            SizedBox(height: 20.h),
+            BlocConsumer<SignUpEmailCubit, SignUpEmailState>(
               listener: (context, state) {
                 if (state is SignUpEmailSuccess) {
                   showCustomSnackbar(
                       context, 'Success', ColorsManager.mainGreen);
                   sendEmailVerifyAlertDialogue(context, onPressed: () {
                     FirebaseAuth.instance.currentUser!.sendEmailVerification();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OnBoardScreenI()),
+                    );
                   });
                 } else if (state is SignUpEmailFailure) {
                   showCustomSnackbar(context, 'Failed,${state.errorMessage}',
@@ -44,66 +47,61 @@ class SignUpScreen extends StatelessWidget {
                 }
               },
               builder: (context, state) {
-                return Stack(
-                  children: [
-                    Positioned(
-                      right: 0,
-                      left: 0,
-                      bottom: 0,
-                      child: Container(
-                        height: 540.h,
-                        decoration: const BoxDecoration(
-                          color: ColorsManager.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40),
-                          ),
-                        ),
-                        child: Form(
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              children: [
-                                const TextInSignInUp(
-                                    textWelcomeOrGetStarted: 'Create account'),
-                                RepeatedTextFormField(
-                                    hintText: 'Enter email',
-                                    controller: context
-                                        .read<SignUpEmailCubit>()
-                                        .emailController),
-                                heightSpace(25),
-                                RepeatedTextFormField(
-                                  hintText: 'Enter password',
-                                  controller: context
-                                      .read<SignUpEmailCubit>()
-                                      .passwordController,
-                                ),
-                                heightSpace(28),
-                                state is SignInEmailLaoding
-                                    ? const CircularProgressIndicator(
-                                        color: ColorsManager.mainGreen,
-                                      )
-                                    : ElevatedButtonForSignInUp(
-                                        signInOrUp: 'Sign Up',
-                                        onPressed: () {
-                                          context
-                                              .read<SignUpEmailCubit>()
-                                              .signUpEmail();
-                                        },
-                                      ),
-                                heightSpace(10),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                return Container(
+                  height: 550,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  decoration: const BoxDecoration(
+                    color: ColorsManager.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
                     ),
-                  ],
+                  ),
+                  child: Form(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const TextInSignInUp(
+                            textWelcomeOrGetStarted: 'Create account'),
+                        RepeatedTextFormField(
+                            icon: const Icon(Icons.email),
+                            hide: false,
+                            hintText: 'Enter email',
+                            controller: context
+                                .read<SignUpEmailCubit>()
+                                .emailController),
+                        heightSpace(25),
+                        RepeatedTextFormField(
+                          icon: const Icon(Icons.key),
+                          hide: true,
+                          hintText: 'Enter password',
+                          controller: context
+                              .read<SignUpEmailCubit>()
+                              .passwordController,
+                        ),
+                        heightSpace(28),
+                        state is SignInEmailLaoding
+                            ? const CircularProgressIndicator(
+                                color: ColorsManager.mainGreen,
+                              )
+                            : ElevatedButtonForSignInUp(
+                                signInOrUp: 'Sign Up',
+                                onPressed: () {
+                                  context
+                                      .read<SignUpEmailCubit>()
+                                      .signUpEmail();
+                                },
+                              ),
+                        heightSpace(10),
+                      ],
+                    ),
+                  ),
                 );
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

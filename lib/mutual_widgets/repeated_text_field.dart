@@ -5,17 +5,22 @@ import 'package:graduation/theming/colors_manager.dart';
 class RepeatedTextFormField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
-  const RepeatedTextFormField(
+  final bool hide;
+  var icon;
+  RepeatedTextFormField(
       {super.key,
       required this.hintText,
       required this.controller,
-      });
+      required this.icon,
+      required this.hide});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: hide,
       controller: controller,
       decoration: InputDecoration(
+        prefixIcon: icon,
         contentPadding: const EdgeInsets.all(17),
         hintText: hintText,
         hintStyle: GoogleFonts.sora(
