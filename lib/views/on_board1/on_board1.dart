@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
+import 'package:graduation/views/home_view/home_view.dart';
 import 'package:graduation/views/on_board2/on_board2.dart';
 
 class OnBoardScreenI extends StatelessWidget {
@@ -20,7 +21,12 @@ class OnBoardScreenI extends StatelessWidget {
               top: 8,
               right: 8,
               child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomeView()),
+                    );
+                  },
                   child: const Text(
                     'Skip',
                     style: TextStyle(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
+import 'package:graduation/views/home_view/home_view.dart';
 
 class OnBoardScreenII extends StatelessWidget {
   const OnBoardScreenII({super.key});
@@ -30,7 +31,12 @@ class OnBoardScreenII extends StatelessWidget {
         ),
         heightSpace(70),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeView()),
+            );
+          },
           style: ElevatedButton.styleFrom(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),

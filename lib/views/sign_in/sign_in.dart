@@ -10,6 +10,7 @@ import 'package:graduation/mutual_widgets/texts_in_sign_in_up.dart';
 import 'package:graduation/routing/routes.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
+import 'package:graduation/views/home_view/home_view.dart';
 import 'package:graduation/views/sign_in/data/cubit/sign_in_email_cubit.dart';
 import 'package:graduation/views/sign_in/widgets/dont_have_account.dart';
 import 'package:graduation/views/sign_in/widgets/forget_pawword.dart';
@@ -52,6 +53,11 @@ class SignInScreen extends StatelessWidget {
                       if (state is SignInEmailSuccess) {
                         showCustomSnackbar(
                             context, 'Success', ColorsManager.mainGreen);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeView()),
+                        );
                       } else if (state is SignInEmailFailure) {
                         showCustomSnackbar(context,
                             'Failed,${state.errorMessage}', ColorsManager.red);
