@@ -11,7 +11,7 @@ class RepeatedTextFormField extends StatelessWidget {
       {super.key,
       required this.hintText,
       required this.controller,
-      required this.icon,
+      this.icon,
       required this.hide});
 
   @override
@@ -24,7 +24,7 @@ class RepeatedTextFormField extends StatelessWidget {
         contentPadding: const EdgeInsets.all(17),
         hintText: hintText,
         hintStyle: GoogleFonts.sora(
-          color: ColorsManager.navyBlue,
+          color: const Color.fromARGB(128, 36, 52, 67),
           fontSize: 15,
           fontWeight: FontWeight.w500,
         ),
