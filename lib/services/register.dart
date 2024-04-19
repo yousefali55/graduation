@@ -12,7 +12,7 @@ class RegisterService {
     required String userType,
   }) async {
     try {
-      var requestBody = jsonEncode({
+      var requestBody = {
         'email': email,
         'password': password,
         'password2': password2,
@@ -20,25 +20,39 @@ class RegisterService {
         'firstname': firstname,
         'lastname': lastname,
         'user_type': userType,
-      });
+      };
 
       var response = await http.post(
         Uri.parse('http://54.161.17.51:8000/api/auth/register/'),
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
         },
         body: requestBody,
       );
 
-      if (response.statusCode == 200) {
+      print('Register User Response: ${response.statusCode} ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return null;
-      } else {
+      } else if (response.statusCode == 400) {
         var responseData = jsonDecode(response.body);
-        var errorMessage = responseData['error'] ?? 'Registration failed';
+        var errorMessage = '';
+        if (responseData.containsKey('email')) {
+          errorMessage = 'Email field -> ${responseData['email'][0]}';
+        } else if (responseData.containsKey('password')) {
+          errorMessage = 'Password field -> ${responseData['password'][0]}';
+        } else if (responseData.containsKey('user_type')) {
+          errorMessage = 'User type field -> ${responseData['user_type'][0]}';
+        } else {
+          errorMessage = 'Registration failed';
+        }
         return errorMessage;
+      } else {
+        return 'Registration failed';
       }
     } catch (e) {
+      print('Error registering user: $e');
       return 'Error registering user: ${e.toString()}';
     }
   }

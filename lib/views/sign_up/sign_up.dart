@@ -8,6 +8,7 @@ import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/on_board1/on_board1.dart';
 import 'package:graduation/views/sign_up/data/cubit/sign_up_email_cubit.dart';
+import 'package:graduation/views/sign_up/data/cubit/sign_up_email_state.dart';
 import 'package:graduation/views/sign_up/widgets/send_email_verify.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -20,8 +21,7 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: ColorsManager.mainGreen,
       body: SingleChildScrollView(
-        physics:
-            const BouncingScrollPhysics(), // Add this line for a bouncy effect
+        physics: const BouncingScrollPhysics(),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height,
@@ -30,9 +30,7 @@ class SignUpScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(
-                  height: 40,
-                ),
+                const SizedBox(height: 40),
                 const SizedBox(height: 20),
                 BlocConsumer<SignUpEmailCubit, SignUpEmailState>(
                   listener: (context, state) {
@@ -70,6 +68,13 @@ class SignUpScreen extends StatelessWidget {
                           ),
                         ),
                         child: Form(
+                          onChanged: () {
+                            // Update the form whenever there's a change
+                            signUpCubit
+                                .checkPasswordMatch(); // Check if passwords match
+                            signUpCubit
+                                .checkFormValidity(); // Check form validity
+                          },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisSize: MainAxisSize.min,
@@ -116,12 +121,12 @@ class SignUpScreen extends StatelessWidget {
                                 value: signUpCubit.userType, // Initial value
                                 items: const [
                                   DropdownMenuItem(
-                                    value: 'Student',
-                                    child: Text('Student'),
+                                    value: 'student',
+                                    child: Text('student'),
                                   ),
                                   DropdownMenuItem(
-                                    value: 'Owner',
-                                    child: Text('Owner'),
+                                    value: 'owner',
+                                    child: Text('owner'),
                                   ),
                                 ],
                                 onChanged: (value) {
@@ -135,10 +140,12 @@ class SignUpScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: ColorsManager.mainGreen,
-                                          width: 1)),
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: ColorsManager.mainGreen,
+                                      width: 1,
+                                    ),
+                                  ),
                                 ),
                               ),
                               heightSpace(30),
@@ -150,7 +157,8 @@ class SignUpScreen extends StatelessWidget {
                                     )
                                   : ElevatedButtonForSignInUp(
                                       signInOrUp: 'Sign Up',
-                                      onPressed: signUpCubit.isFormValid()
+                                      onPressed: signUpCubit
+                                              .isSignUpButtonEnabled()
                                           ? () {
                                               signUpCubit.signUpEmail();
                                             }

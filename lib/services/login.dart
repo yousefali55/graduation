@@ -29,6 +29,7 @@ class LoginService {
         return errorMessage;
       }
     } catch (e) {
+      print('Error logging in: $e');
       return 'Error logging in: ${e.toString()}';
     }
   }

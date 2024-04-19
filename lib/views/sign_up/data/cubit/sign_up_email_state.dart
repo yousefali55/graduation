@@ -1,15 +1,20 @@
-part of 'sign_up_email_cubit.dart';
+import 'package:flutter/material.dart';
 
 @immutable
-sealed class SignUpEmailState {}
+abstract class SignUpEmailState {}
 
-final class SignUpEmailInitial extends SignUpEmailState {}
+class SignUpEmailInitial extends SignUpEmailState {}
 
-final class SignUpEmailLoading extends SignUpEmailState {}
+class SignUpEmailLoading extends SignUpEmailState {}
 
-final class SignUpEmailSuccess extends SignUpEmailState {}
+class SignUpEmailSuccess extends SignUpEmailState {}
 
-final class SignUpEmailFailure extends SignUpEmailState {
+class SignUpEmailFailure extends SignUpEmailState {
   final String errorMessage;
   SignUpEmailFailure({required this.errorMessage});
+}
+
+class SignUpFormStatusChanged extends SignUpEmailState {
+  final bool isSignUpButtonEnabled;
+  SignUpFormStatusChanged({required this.isSignUpButtonEnabled});
 }

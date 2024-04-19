@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation/services/register.dart';
-part 'sign_up_email_state.dart';
+import 'package:graduation/views/sign_up/data/cubit/sign_up_email_state.dart';
 
 class SignUpEmailCubit extends Cubit<SignUpEmailState> {
   TextEditingController emailController = TextEditingController();
@@ -12,6 +12,8 @@ class SignUpEmailCubit extends Cubit<SignUpEmailState> {
   TextEditingController lastnameController = TextEditingController();
 
   String? _userType; // Private variable to hold user type
+  bool _passwordsMatch = false;
+  bool _isSignUpButtonEnabled = false;
 
   SignUpEmailCubit() : super(SignUpEmailInitial());
 
@@ -21,16 +23,32 @@ class SignUpEmailCubit extends Cubit<SignUpEmailState> {
   // Method to set user type
   void setUserType(String type) {
     _userType = type;
+    checkFormValidity();
   }
 
-  bool isFormValid() {
-    return emailController.text.isNotEmpty &&
+  // Check if passwords match
+  void checkPasswordMatch() {
+    _passwordsMatch = passwordController.text == password2Controller.text;
+    checkFormValidity();
+  }
+
+  // Check overall form validity
+  void checkFormValidity() {
+    _isSignUpButtonEnabled = emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty &&
         password2Controller.text.isNotEmpty &&
         usernameController.text.isNotEmpty &&
         firstnameController.text.isNotEmpty &&
         lastnameController.text.isNotEmpty &&
-        _userType != null;
+        _userType != null &&
+        _passwordsMatch;
+    emit(
+        SignUpFormStatusChanged(isSignUpButtonEnabled: _isSignUpButtonEnabled));
+  }
+
+  // Getter for sign-up button status
+  bool isSignUpButtonEnabled() {
+    return _isSignUpButtonEnabled;
   }
 
   signUpEmail() async {
