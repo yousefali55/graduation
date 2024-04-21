@@ -38,24 +38,24 @@ class _HomeViewState extends State<HomeView> {
         bathrooms: 2,
         rooms: 5,
       ),
-      Apartment(
-        title: 'Spacious Condo with Great View',
-        location: 'Suburb Area',
-        price: 1500,
-        imageUrl: 'images/apartment 2.jpg',
-        beds: 2,
-        bathrooms: 1,
-        rooms: 4,
-      ),
-      Apartment(
-        title: 'Cozy Studio Apartment near Park',
-        location: 'Park Area',
-        price: 1000,
-        imageUrl: 'images/apartment 3.jpg',
-        beds: 1,
-        bathrooms: 1,
-        rooms: 2,
-      ),
+      // Apartment(
+      //   title: 'Spacious Condo with Great View',
+      //   location: 'Suburb Area',
+      //   price: 1500,
+      //   imageUrl: 'images/apartment 2.jpg',
+      //   beds: 2,
+      //   bathrooms: 1,
+      //   rooms: 4,
+      // ),
+      // Apartment(
+      //   title: 'Cozy Studio Apartment near Park',
+      //   location: 'Park Area',
+      //   price: 1000,
+      //   imageUrl: 'images/apartment 3.jpg',
+      //   beds: 1,
+      //   bathrooms: 1,
+      //   rooms: 2,
+      // ),
     ];
   }
 
