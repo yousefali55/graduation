@@ -1,14 +1,15 @@
-part of 'sign_in_email_cubit.dart';
+import 'package:meta/meta.dart';
 
-sealed class SignInEmailState {}
+@immutable
+abstract class SignInEmailState {}
 
-final class SignInEmailInitial extends SignInEmailState {}
+class SignInEmailInitial extends SignInEmailState {}
 
-final class SignInEmailLoading extends SignInEmailState {}
+class SignInEmailLoading extends SignInEmailState {}
 
-final class SignInEmailSuccess extends SignInEmailState {}
+class SignInEmailSuccess extends SignInEmailState {}
 
-final class SignInEmailFailure extends SignInEmailState {
+class SignInEmailFailure extends SignInEmailState {
   final String errorMessage;
   SignInEmailFailure({required this.errorMessage});
 }

@@ -38,7 +38,9 @@ class RegisterService {
       } else if (response.statusCode == 400) {
         var responseData = jsonDecode(response.body);
         var errorMessage = '';
-        if (responseData.containsKey('email')) {
+        if (responseData.containsKey('username')) {
+          errorMessage = 'A user with that username already exists.';
+        } else if (responseData.containsKey('email')) {
           errorMessage = 'Email field -> ${responseData['email'][0]}';
         } else if (responseData.containsKey('password')) {
           errorMessage = 'Password field -> ${responseData['password'][0]}';

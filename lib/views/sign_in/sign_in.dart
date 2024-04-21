@@ -8,6 +8,7 @@ import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/home_view/home_view.dart';
 import 'package:graduation/views/sign_in/data/cubit/sign_in_email_cubit.dart';
+import 'package:graduation/views/sign_in/data/cubit/sign_in_email_state.dart';
 import 'package:graduation/views/sign_in/widgets/dont_have_account.dart';
 import 'package:graduation/views/sign_in/widgets/forget_pawword.dart';
 import 'package:graduation/views/sign_up/sign_up.dart';
@@ -23,12 +24,9 @@ class SignInScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              height: 190,
-              child: Image.asset(
-                'images/logo circle.png',
-              ),
-            ),
+            const SizedBox(
+                height: 190,
+                child: Image(image: AssetImage('images/logo circle.png'))),
             const SizedBox(height: 25),
             Container(
               height: MediaQuery.of(context).size.height - 220,
@@ -57,7 +55,7 @@ class SignInScreen extends StatelessWidget {
                   } else if (state is SignInEmailFailure) {
                     showCustomSnackbar(
                       context,
-                      'Failed, ${state.errorMessage}',
+                      _getErrorMessage(state.errorMessage),
                       ColorsManager.red,
                     );
                   }
@@ -69,13 +67,15 @@ class SignInScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const TextInSignInUp(
-                            textWelcomeOrGetStarted: 'Welcome back!'),
+                          textWelcomeOrGetStarted: 'Welcome back!',
+                        ),
                         RepeatedTextFormField(
-                          icon: const Icon(Icons.email),
+                          icon: const Icon(Icons.person),
                           hide: false,
-                          hintText: 'Enter email',
-                          controller:
-                              context.read<SignInEmailCubit>().emailController,
+                          hintText: 'Enter username',
+                          controller: context
+                              .read<SignInEmailCubit>()
+                              .usernameController,
                         ),
                         heightSpace(25),
                         RepeatedTextFormField(
@@ -126,7 +126,8 @@ class SignInScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SignUpScreen()),
+                                builder: (context) => const SignUpScreen(),
+                              ),
                             );
                           },
                         ),
@@ -140,5 +141,12 @@ class SignInScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getErrorMessage(String errorMessage) {
+    if (errorMessage.contains("email")) {
+      return "Email field must be unique";
+    }
+    return errorMessage;
   }
 }
