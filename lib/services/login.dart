@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
   Future<String?> loginUser({
@@ -27,8 +28,9 @@ class LoginService {
       if (response.statusCode == 200) {
         var responseData = jsonDecode(response.body);
         var token = responseData['token'] ?? '';
-        // You can handle the token here or return it
-        return null; // No error message
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('auth_token', token);
+        // return token;
       } else {
         var responseData = jsonDecode(response.body);
         var errorMessage = responseData['error'] ??

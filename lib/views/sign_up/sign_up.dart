@@ -162,7 +162,7 @@ class SignUpScreen extends StatelessWidget {
                                           ? () {
                                               signUpCubit.signUpEmail();
                                             }
-                                          : null, // Disable button if form is not valid
+                                          : null, 
                                     ),
                               heightSpace(10),
                             ],
