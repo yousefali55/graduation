@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart'; // Import DateFormat for date parsing
+
 class Photo {
   final int id;
   final int apartmentId;
@@ -12,20 +14,22 @@ class Photo {
   });
 
   factory Photo.fromJson(Map<String, dynamic> json) {
+    final dateFormat = DateFormat('yyyy-MM-dd hh:mm:ss a');
     return Photo(
       id: json['id'],
       apartmentId: json['apartment'],
       photo: json['photo'],
-      addedAt: DateTime.parse(json['added_at']),
+      addedAt: dateFormat.parse(json['added_at']), // Corrected parsing
     );
   }
 
   Map<String, dynamic> toJson() {
+    final dateFormat = DateFormat('yyyy-MM-dd hh:mm:ss a');
     return {
       'id': id,
       'apartment': apartmentId,
       'photo': photo,
-      'added_at': addedAt.toIso8601String(),
+      'added_at': dateFormat.format(addedAt), // Corrected formatting
     };
   }
 }
@@ -52,8 +56,6 @@ class ApartmentModel {
   final String finishingType;
   final int floorNumber;
   final int yearOfConstruction;
-  final DateTime addedDate;
-  final DateTime updatedDate;
   final int owner;
 
   ApartmentModel({
@@ -78,8 +80,6 @@ class ApartmentModel {
     required this.finishingType,
     required this.floorNumber,
     required this.yearOfConstruction,
-    required this.addedDate,
-    required this.updatedDate,
     required this.owner,
   });
 
@@ -108,8 +108,6 @@ class ApartmentModel {
       finishingType: json['finishing_type'],
       floorNumber: json['floor_number'],
       yearOfConstruction: json['year_of_construction'],
-      addedDate: DateTime.parse(json['added_date']),
-      updatedDate: DateTime.parse(json['updated_date']),
       owner: json['owner'],
     );
   }
@@ -137,8 +135,6 @@ class ApartmentModel {
       'finishing_type': finishingType,
       'floor_number': floorNumber,
       'year_of_construction': yearOfConstruction,
-      'added_date': addedDate.toIso8601String(),
-      'updated_date': updatedDate.toIso8601String(),
       'owner': owner,
     };
   }
