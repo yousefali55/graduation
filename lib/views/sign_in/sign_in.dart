@@ -6,6 +6,7 @@ import 'package:graduation/mutual_widgets/repeated_text_field.dart';
 import 'package:graduation/mutual_widgets/texts_in_sign_in_up.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
+import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
 import 'package:graduation/views/home_view/home_view.dart';
 import 'package:graduation/views/sign_in/data/cubit/sign_in_email_cubit.dart';
 import 'package:graduation/views/sign_in/data/cubit/sign_in_email_state.dart';
@@ -49,7 +50,10 @@ class SignInScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const HomeView(),
+                        builder: (context) => BlocProvider(
+                          create: (context) => GetApartmentsCubit()..fetchApartments(),
+                          child: const HomeView(),
+                        ),
                       ),
                     );
                   } else if (state is SignInEmailFailure) {
