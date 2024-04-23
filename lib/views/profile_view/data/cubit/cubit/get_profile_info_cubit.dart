@@ -8,32 +8,36 @@ part 'get_profile_info_state.dart';
 
 class GetProfileInfoCubit extends Cubit<GetProfileInfoState> {
   GetProfileInfoCubit() : super(GetProfileInfoInitial());
+
   final String apiUrl = "http://54.161.17.51:8000/api/profile/";
 
-  Future<dynamic> fetchProfileInfo() async {
+  Future<void> fetchProfileInfo() async {
     final Dio dio = Dio();
+    emit(GetProfileInfoLoading());
     try {
-      emit(GetProfileInfoLoading());
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('auth_token');
       if (token == null) {
         emit(GetProfileInfoFailure(errorMessage: 'Token not found'));
-        Response response = await dio.get(
-          apiUrl,
-          options: Options(
-            headers: {
-              'Authorization': 'Token $token',
-            },
-          ),
-        );
-        if (response.statusCode == 200) {
-          final data = response.data;
-          final profile = ProfileModel.fromJson(data);
-          print(profile);
-          emit(GetProfileInfoSuccess(profileModel: profile));
-        } else {
-          emit(GetProfileInfoFailure(errorMessage: '${response.statusCode}'));
-        }
+        return;
+      }
+
+      Response response = await dio.get(
+        apiUrl,
+        options: Options(
+          headers: {
+            'Authorization': 'Token $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        final profile = ProfileModel.fromJson(data);
+        emit(GetProfileInfoSuccess(profileModel: profile));
+      } else {
+        emit(GetProfileInfoFailure(
+            errorMessage: 'Failed to fetch profile info'));
       }
     } catch (e) {
       emit(GetProfileInfoFailure(errorMessage: e.toString()));
