@@ -9,7 +9,6 @@ import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/on_board1/on_board1.dart';
 import 'package:graduation/views/sign_up/data/cubit/sign_up_email_cubit.dart';
 import 'package:graduation/views/sign_up/data/cubit/sign_up_email_state.dart';
-import 'package:graduation/views/sign_up/widgets/send_email_verify.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -35,19 +34,31 @@ class SignUpScreen extends StatelessWidget {
                 BlocConsumer<SignUpEmailCubit, SignUpEmailState>(
                   listener: (context, state) {
                     if (state is SignUpEmailSuccess) {
-                      showCustomSnackbar(
-                        context,
-                        'Success',
-                        ColorsManager.mainGreen,
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext dialogContext) {
+                          Future.delayed(const Duration(seconds: 2), () {
+                            Navigator.pop(dialogContext);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const OnBoardScreenI(),
+                              ),
+                            );
+                          });
+                          return const AlertDialog(
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CircularProgressIndicator(),
+                                SizedBox(height: 16),
+                                Text('Loading..'),
+                              ],
+                            ),
+                          );
+                        },
                       );
-                      sendEmailVerifyAlertDialogue(context, onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const OnBoardScreenI(),
-                          ),
-                        );
-                      });
                     } else if (state is SignUpEmailFailure) {
                       showCustomSnackbar(
                         context,
@@ -70,10 +81,8 @@ class SignUpScreen extends StatelessWidget {
                         child: Form(
                           onChanged: () {
                             // Update the form whenever there's a change
-                            signUpCubit
-                                .checkPasswordMatch(); // Check if passwords match
-                            signUpCubit
-                                .checkFormValidity(); // Check form validity
+                            signUpCubit.checkPasswordMatch();
+                            signUpCubit.checkFormValidity();
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -157,12 +166,12 @@ class SignUpScreen extends StatelessWidget {
                                     )
                                   : ElevatedButtonForSignInUp(
                                       signInOrUp: 'Sign Up',
-                                      onPressed: signUpCubit
-                                              .isSignUpButtonEnabled()
-                                          ? () {
-                                              signUpCubit.signUpEmail();
-                                            }
-                                          : null, 
+                                      onPressed:
+                                          signUpCubit.isSignUpButtonEnabled()
+                                              ? () {
+                                                  signUpCubit.signUpEmail();
+                                                }
+                                              : null,
                                     ),
                               heightSpace(10),
                             ],
@@ -177,8 +186,7 @@ class SignUpScreen extends StatelessWidget {
           ),
         ),
       ),
-      resizeToAvoidBottomInset:
-          true, // Allow the screen to resize when the keyboard appears
+      resizeToAvoidBottomInset: true,
     );
   }
 }
