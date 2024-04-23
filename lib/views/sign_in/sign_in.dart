@@ -4,6 +4,7 @@ import 'package:graduation/mutual_widgets/custom_snack_bar.dart';
 import 'package:graduation/mutual_widgets/elevated_button_for_sign_in_up.dart';
 import 'package:graduation/mutual_widgets/repeated_text_field.dart';
 import 'package:graduation/mutual_widgets/texts_in_sign_in_up.dart';
+import 'package:graduation/routing/routes.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
@@ -51,7 +52,8 @@ class SignInScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => BlocProvider(
-                          create: (context) => GetApartmentsCubit()..fetchApartments(),
+                          create: (context) =>
+                              GetApartmentsCubit()..fetchApartments(),
                           child: const HomeView(),
                         ),
                       ),
@@ -90,25 +92,13 @@ class SignInScreen extends StatelessWidget {
                               .read<SignInEmailCubit>()
                               .passwordController,
                         ),
-                        heightSpace(8),
-                        ForgetPassword(
-                          onPressed: () async {
-                            try {
-                              // Implement your forgot password logic here
-                              showDialog(
-                                context: context,
-                                builder: (_) =>
-                                    const Text('Go Check The email'),
-                              );
-                            } catch (e) {
-                              showCustomSnackbar(
-                                context,
-                                'Something wrong about ${e.toString()}, try again with correct email',
-                                ColorsManager.red,
-                              );
-                            }
+                        ForgetPasswordOrChangePassword(
+                          forgetOrChange: 'Change Password?',
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.changePassword);
                           },
                         ),
+                        heightSpace(8),
                         heightSpace(20),
                         state is SignInEmailLoading
                             ? const Center(
