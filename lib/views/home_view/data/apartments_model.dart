@@ -57,6 +57,7 @@ class ApartmentModel {
   final int floorNumber;
   final int yearOfConstruction;
   final int owner;
+  bool isFavorite; // Add isFavorite property
 
   ApartmentModel({
     required this.id,
@@ -81,6 +82,7 @@ class ApartmentModel {
     required this.floorNumber,
     required this.yearOfConstruction,
     required this.owner,
+    this.isFavorite = false, // Initialize isFavorite property
   });
 
   factory ApartmentModel.fromJson(Map<String, dynamic> json) {
@@ -97,7 +99,8 @@ class ApartmentModel {
       titleAr: json.containsKey('title_ar') ? json['title_ar'] : null,
       description: json['description'],
       descriptionEn: json['description_en'],
-      descriptionAr: json.containsKey('description_ar') ? json['description_ar'] : null,
+      descriptionAr:
+          json.containsKey('description_ar') ? json['description_ar'] : null,
       address: json['address'],
       price: double.parse(json['price']),
       rooms: json['rooms'],
@@ -109,6 +112,7 @@ class ApartmentModel {
       floorNumber: json['floor_number'],
       yearOfConstruction: json['year_of_construction'],
       owner: json['owner'],
+      isFavorite: false, // Default isFavorite value
     );
   }
 
