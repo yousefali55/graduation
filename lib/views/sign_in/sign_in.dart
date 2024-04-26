@@ -92,13 +92,13 @@ class SignInScreen extends StatelessWidget {
                               .read<SignInEmailCubit>()
                               .passwordController,
                         ),
+                        heightSpace(8),
                         ForgetPasswordOrChangePassword(
                           forgetOrChange: 'Change Password?',
                           onPressed: () {
                             Navigator.pushNamed(context, Routes.changePassword);
                           },
                         ),
-                        heightSpace(8),
                         heightSpace(20),
                         state is SignInEmailLoading
                             ? const Center(

@@ -55,7 +55,7 @@ class _AddApartmentDialogState extends State<AddApartmentDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               Navigator.pop(context);
-              // Add your logic to add an apartment here
+              
             }
           },
           child: const Text('Add'),

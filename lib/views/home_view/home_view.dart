@@ -4,6 +4,7 @@ import 'package:graduation/views/apartments_details_view/apartment_details.dart'
 import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_state.dart';
 import 'package:graduation/views/home_view/widgets/list_apartments.dart';
+import 'package:graduation/views/home_view/widgets/floating_button.dart';
 import 'package:graduation/views/profile_view/profile_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -140,6 +141,7 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
+      floatingActionButton: const HomeViewFloatingButton(),
     );
   }
 }
