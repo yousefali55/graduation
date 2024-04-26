@@ -10,8 +10,19 @@ class GetProfileInfoCubit extends Cubit<GetProfileInfoState> {
   GetProfileInfoCubit() : super(GetProfileInfoInitial());
 
   final String apiUrl = "http://54.161.17.51:8000/api/profile/";
+  bool _isClosed = false; // Add a flag to track the closed state
+
+  @override
+  Future<void> close() {
+    _isClosed = true; // Set the flag to true when closing
+    return super.close();
+  }
 
   Future<void> fetchProfileInfo() async {
+    if (_isClosed) {
+      return; // Avoid fetching data if the Bloc is already closed
+    }
+
     final Dio dio = Dio();
     emit(GetProfileInfoLoading());
     try {
@@ -30,6 +41,10 @@ class GetProfileInfoCubit extends Cubit<GetProfileInfoState> {
           },
         ),
       );
+
+      if (_isClosed) {
+        return; // Check again after async operation before emitting
+      }
 
       if (response.statusCode == 200) {
         final data = response.data;
