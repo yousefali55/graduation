@@ -41,5 +41,6 @@ class LoginService {
       print('Error logging in: $e');
       return 'Error logging in: ${e.toString()}';
     }
+    return null;
   }
 }

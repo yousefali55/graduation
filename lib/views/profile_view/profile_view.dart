@@ -3,7 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
+import 'package:graduation/views/delete_account/data/delete_account_cubit.dart';
+import 'package:graduation/views/delete_account/delete_account.dart';
+import 'package:graduation/views/edit_profile/edit_profile_view.dart';
 import 'package:graduation/views/profile_view/data/cubit/cubit/get_profile_info_cubit.dart';
+import 'package:graduation/views/sign_in/sign_in.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -23,7 +27,6 @@ class ProfileView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Profile Image
                     Stack(
                       children: [
                         SizedBox(
@@ -32,25 +35,8 @@ class ProfileView extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: Image.asset(
-                              'images/logo circle.png',
+                              'images/avatar.jpg',
                               fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: ColorsManager.mainGreen,
-                            ),
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.black,
-                              size: 20,
                             ),
                           ),
                         ),
@@ -84,7 +70,12 @@ class ProfileView extends StatelessWidget {
                       width: 200,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigate to edit profile screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EditProfileScreen(),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ColorsManager.mainGreen,
@@ -115,19 +106,20 @@ class ProfileView extends StatelessWidget {
                         // Handle Settings button press
                       },
                     ),
+
+                    ProfileMenuWidget(
+                      color: ColorsManager.mainGreen,
+                      title: 'Change Password',
+                      icon: Icons.key_sharp,
+                      onPress: () {
+                        // Handle Information button press
+                      },
+                    ),
                     ProfileMenuWidget(
                       color: ColorsManager.mainGreen,
                       title: 'Contact Us',
                       icon: Icons.contact_support,
                       onPress: () {},
-                    ),
-                    ProfileMenuWidget(
-                      color: ColorsManager.mainGreen,
-                      title: 'Information',
-                      icon: Icons.info,
-                      onPress: () {
-                        // Handle Information button press
-                      },
                     ),
                     const Divider(),
 
@@ -136,8 +128,17 @@ class ProfileView extends StatelessWidget {
                       title: 'Delete your account',
                       textColor: const Color.fromARGB(255, 209, 17, 3),
                       icon: Icons.delete_forever,
-                      onPress: () {},
+                      onPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => BlocProvider(
+                            create: (context) => DeleteAccountCubit(),
+                            child: const DeleteAccountDialog(),
+                          ),
+                        );
+                      },
                     ),
+
                     ProfileMenuWidget(
                       color: ColorsManager.mainGreen,
                       title: 'Logout',
@@ -145,7 +146,11 @@ class ProfileView extends StatelessWidget {
                       textColor: ColorsManager.mainGreen,
                       endIcon: false,
                       onPress: () {
-                        // Handle Logout button press
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignInScreen()),
+                        );
                       },
                     ),
                   ],

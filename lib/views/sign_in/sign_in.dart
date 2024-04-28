@@ -20,118 +20,139 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorsManager.mainGreen,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(
-                height: 190,
-                child: Image(image: AssetImage('images/logo circle.png'))),
-            const SizedBox(height: 25),
-            Container(
-              height: MediaQuery.of(context).size.height - 220,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: const BoxDecoration(
-                color: ColorsManager.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
-                ),
+    return WillPopScope(
+      onWillPop: () async {
+        final shouldPop = await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Do you want to exit the app?'),
+            actions: [
+              TextButton(
+                child: const Text('No'),
+                onPressed: () => Navigator.of(context).pop(false),
               ),
-              child: BlocConsumer<SignInEmailCubit, SignInEmailState>(
-                listener: (context, state) {
-                  if (state is SignInEmailSuccess) {
-                    showCustomSnackbar(
-                      context,
-                      'Success',
-                      ColorsManager.mainGreen,
-                    );
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BlocProvider(
-                          create: (context) =>
-                              GetApartmentsCubit()..fetchApartments(),
-                          child: const HomeView(),
-                        ),
-                      ),
-                    );
-                  } else if (state is SignInEmailFailure) {
-                    showCustomSnackbar(
-                      context,
-                      _getErrorMessage(state.errorMessage),
-                      ColorsManager.red,
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  return Form(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const TextInSignInUp(
-                          textWelcomeOrGetStarted: 'Welcome back!',
-                        ),
-                        RepeatedTextFormField(
-                          icon: const Icon(Icons.person),
-                          hide: false,
-                          hintText: 'Enter username',
-                          controller: context
-                              .read<SignInEmailCubit>()
-                              .usernameController,
-                        ),
-                        heightSpace(25),
-                        RepeatedTextFormField(
-                          icon: const Icon(Icons.key),
-                          hide: true,
-                          hintText: 'Enter password',
-                          controller: context
-                              .read<SignInEmailCubit>()
-                              .passwordController,
-                        ),
-                        heightSpace(8),
-                        ForgetPasswordOrChangePassword(
-                          forgetOrChange: 'Change Password?',
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.changePassword);
-                          },
-                        ),
-                        heightSpace(20),
-                        state is SignInEmailLoading
-                            ? const Center(
-                                child: CircularProgressIndicator(
-                                  color: ColorsManager.mainGreen,
-                                ),
-                              )
-                            : ElevatedButtonForSignInUp(
-                                signInOrUp: 'Sign In',
-                                onPressed: () {
-                                  context
-                                      .read<SignInEmailCubit>()
-                                      .signInEmail();
-                                },
-                              ),
-                        heightSpace(20),
-                        DontHaveAccount(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SignUpScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+              TextButton(
+                child: const Text('Yes'),
+                onPressed: () => Navigator.of(context).pop(true),
+              ),
+            ],
+          ),
+        );
+
+        return shouldPop ?? false;
+      },
+      child: BlocProvider(
+        create: (context) => SignInEmailCubit(),
+        child: Scaffold(
+          backgroundColor: ColorsManager.mainGreen,
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(
+                    height: 190,
+                    child: Image(image: AssetImage('images/logo circle.png'))),
+                const SizedBox(height: 25),
+                Container(
+                  height: MediaQuery.of(context).size.height - 220,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: const BoxDecoration(
+                    color: ColorsManager.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
                     ),
-                  );
-                },
-              ),
+                  ),
+                  child: BlocConsumer<SignInEmailCubit, SignInEmailState>(
+                    listener: (context, state) {
+                      if (state is SignInEmailSuccess) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider(
+                              create: (context) =>
+                                  GetApartmentsCubit()..fetchApartments(),
+                              child: const HomeView(),
+                            ),
+                          ),
+                        );
+                      } else if (state is SignInEmailFailure) {
+                        showCustomSnackbar(
+                          context,
+                          _getErrorMessage(state.errorMessage),
+                          ColorsManager.red,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      return Form(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const TextInSignInUp(
+                              textWelcomeOrGetStarted: 'Welcome back!',
+                            ),
+                            RepeatedTextFormField(
+                              icon: const Icon(Icons.person),
+                              hide: false,
+                              hintText: 'Enter username',
+                              controller: context
+                                  .read<SignInEmailCubit>()
+                                  .usernameController,
+                            ),
+                            heightSpace(25),
+                            RepeatedTextFormField(
+                              icon: const Icon(Icons.key),
+                              hide: true,
+                              hintText: 'Enter password',
+                              controller: context
+                                  .read<SignInEmailCubit>()
+                                  .passwordController,
+                            ),
+                            heightSpace(8),
+                            ForgetPasswordOrChangePassword(
+                              forgetOrChange: 'Forget Password?',
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, Routes.changePassword);
+                              },
+                            ),
+                            heightSpace(20),
+                            state is SignInEmailLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                      color: ColorsManager.mainGreen,
+                                    ),
+                                  )
+                                : ElevatedButtonForSignInUp(
+                                    signInOrUp: 'Sign In',
+                                    onPressed: () {
+                                      context
+                                          .read<SignInEmailCubit>()
+                                          .signInEmail();
+                                    },
+                                  ),
+                            heightSpace(20),
+                            DontHaveAccount(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignUpScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -7,22 +7,22 @@ import 'package:graduation/mutual_widgets/repeated_text_field.dart';
 import 'package:graduation/mutual_widgets/texts_in_sign_in_up.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
-import 'package:graduation/views/change_password/cubit/change_password_cubit.dart';
+import 'package:graduation/views/reset_password/cubit/reset_password_cubit.dart';
 
-class ChangePasswordScreen extends StatelessWidget {
-  const ChangePasswordScreen({super.key});
+class ResetPasswordScreen extends StatelessWidget {
+  const ResetPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
+    return BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
       listener: (context, state) {
-        if (state is ChangePasswordSuccess) {
+        if (state is ResetPasswordSuccess) {
           showCustomSnackbar(
             context,
             'Success',
             ColorsManager.mainGreen,
           );
-        } else if (state is ChangePasswordFailure) {
+        } else if (state is ResetPasswordFailure) {
           showCustomSnackbar(
             context,
             'failed,${state.errorMessage}',
@@ -37,7 +37,7 @@ class ChangePasswordScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 230.h),
+                SizedBox(height: 200.h),
                 Container(
                   height: MediaQuery.of(context).size.height - 220,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -50,12 +50,13 @@ class ChangePasswordScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      TextInSignInUp(textWelcomeOrGetStarted: 'Reset Password'),
+                      const TextInSignInUp(
+                          textWelcomeOrGetStarted: 'Reset Password'),
                       heightSpace(90),
                       RepeatedTextFormField(
                         hintText: 'Email',
                         controller: context
-                            .read<ChangePasswordCubit>()
+                            .read<ResetPasswordCubit>()
                             .emailTextEditingController,
                         hide: false,
                       ),
@@ -64,7 +65,7 @@ class ChangePasswordScreen extends StatelessWidget {
                         signInOrUp: 'Reset !',
                         onPressed: () {
                           context
-                              .read<ChangePasswordCubit>()
+                              .read<ResetPasswordCubit>()
                               .requestPasswordChange();
                         },
                       )

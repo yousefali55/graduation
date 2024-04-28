@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/apartments_details_view/apartment_details.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_state.dart';
@@ -142,7 +143,9 @@ class ListApartment extends StatelessWidget {
           );
         } else {
           return const Center(
-            child: Text('Unknown state'),
+            child: CircularProgressIndicator(
+              color: ColorsManager.mainGreen,
+            ),
           );
         }
       },
