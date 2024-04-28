@@ -107,7 +107,7 @@ class ListApartment extends StatelessWidget {
                                 Text(
                                   apartment.description ??
                                       'No description available',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 14.0,
                                   ),
                                 ),
