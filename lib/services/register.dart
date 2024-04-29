@@ -7,8 +7,8 @@ class RegisterService {
     required String password,
     required String password2,
     required String username,
-    required String firstname,
-    required String lastname,
+    required String first_name,
+    required String last_name,
     required String userType,
   }) async {
     try {
@@ -17,8 +17,8 @@ class RegisterService {
         'password': password,
         'password2': password2,
         'username': username,
-        'firstname': firstname,
-        'lastname': lastname,
+        'first_name': first_name,
+        'last_name': last_name,
         'user_type': userType,
       };
 

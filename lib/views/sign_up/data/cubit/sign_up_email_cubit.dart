@@ -60,8 +60,8 @@ class SignUpEmailCubit extends Cubit<SignUpEmailState> {
         password: passwordController.text,
         password2: password2Controller.text,
         username: usernameController.text,
-        firstname: firstnameController.text,
-        lastname: lastnameController.text,
+        first_name: firstnameController.text,
+        last_name: lastnameController.text,
         userType: _userType ?? '',
       );
       if (errorMessage == null) {

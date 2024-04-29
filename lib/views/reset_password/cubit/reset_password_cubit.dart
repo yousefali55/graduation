@@ -1,12 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
-part 'change_password_state.dart';
+part 'reset_password_state.dart';
 
-class ChangePasswordCubit extends Cubit<ChangePasswordState> {
-  ChangePasswordCubit() : super(ChangePasswordInitial());
+class ResetPasswordCubit extends Cubit<ResetPasswordState> {
+  ResetPasswordCubit() : super(ResetPasswordInitial());
   TextEditingController emailTextEditingController = TextEditingController();
   final String apiUrl = 'http://54.161.17.51:8000/api/request-reset-password/';
 
@@ -27,10 +26,10 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       );
       if (response.statusCode == 200) {
         print("Password reset request successful");
-        emit(ChangePasswordSuccess());
+        emit(ResetPasswordSuccess());
       } else {
         print("Unexpected status code: ${response.statusCode}");
-        emit(ChangePasswordFailure(
+        emit(ResetPasswordFailure(
             errorMessage: 'Unexpected status code: ${response.statusCode}'));
       }
     } catch (dioError) {
@@ -39,16 +38,16 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
           final statusCode = dioError.response?.statusCode;
           final errorData = dioError.response?.data;
 
-          emit(ChangePasswordFailure(
-            errorMessage: 'Error ${statusCode}: ${errorData}',
+          emit(ResetPasswordFailure(
+            errorMessage: 'Error $statusCode: $errorData',
           ));
         } else {
-          emit(ChangePasswordFailure(
+          emit(ResetPasswordFailure(
             errorMessage: 'Dio error: ${dioError.type} - ${dioError.message}',
           ));
         }
       } else {
-        emit(ChangePasswordFailure(
+        emit(ResetPasswordFailure(
             errorMessage: 'An error occurred: ${dioError.toString()}'));
       }
     }
