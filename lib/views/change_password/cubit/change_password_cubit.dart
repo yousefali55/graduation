@@ -21,7 +21,7 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
         },
         options: Options(
           headers: {
-            'Content-Type': 'application/json', // Ensure correct content type
+            'Content-Type': 'application/json', 
           },
         ),
       );

@@ -57,8 +57,6 @@ class ProfileView extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-
-                    // Profile Info
                     Text(
                       profile.username,
                       style: GoogleFonts.sora(
@@ -67,7 +65,6 @@ class ProfileView extends StatelessWidget {
                         color: ColorsManager.navyBlue,
                       ),
                     ),
-
                     heightSpace(5),
                     Text(
                       profile.userType,
@@ -76,15 +73,11 @@ class ProfileView extends StatelessWidget {
                         color: const Color.fromARGB(255, 0, 0, 0),
                       ),
                     ),
-
                     const SizedBox(height: 10),
-
-                    // Menu Buttons
                     SizedBox(
                       width: 200,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigate to edit profile screen
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ColorsManager.mainGreen,
@@ -103,10 +96,7 @@ class ProfileView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-
                     const Divider(),
-
-                    // Profile Menu
                     ProfileMenuWidget(
                       color: ColorsManager.mainGreen,
                       title: 'Dark mode',
@@ -130,7 +120,6 @@ class ProfileView extends StatelessWidget {
                       },
                     ),
                     const Divider(),
-
                     ProfileMenuWidget(
                       color: const Color.fromARGB(255, 209, 17, 3),
                       title: 'Delete your account',
@@ -145,7 +134,6 @@ class ProfileView extends StatelessWidget {
                       textColor: ColorsManager.mainGreen,
                       endIcon: false,
                       onPress: () {
-                        // Handle Logout button press
                       },
                     ),
                   ],

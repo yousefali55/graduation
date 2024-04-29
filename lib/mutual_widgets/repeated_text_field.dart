@@ -6,9 +6,11 @@ class RepeatedTextFormField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
   final bool hide;
+  TextInputType? keyboardType;
   var icon;
   RepeatedTextFormField(
       {super.key,
+      this.keyboardType,
       required this.hintText,
       required this.controller,
       this.icon,
@@ -17,6 +19,7 @@ class RepeatedTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: keyboardType,
       obscureText: hide,
       controller: controller,
       decoration: InputDecoration(
