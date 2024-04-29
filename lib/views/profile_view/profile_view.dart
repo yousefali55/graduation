@@ -97,7 +97,6 @@ class ProfileView extends StatelessWidget {
                         // Handle Settings button press
                       },
                     ),
-
                     ProfileMenuWidget(
                       color: ColorsManager.mainGreen,
                       title: 'Change Password',
@@ -128,7 +127,6 @@ class ProfileView extends StatelessWidget {
                         );
                       },
                     ),
-
                     ProfileMenuWidget(
                       color: ColorsManager.mainGreen,
                       title: 'Logout',
@@ -136,6 +134,11 @@ class ProfileView extends StatelessWidget {
                       textColor: ColorsManager.mainGreen,
                       endIcon: false,
                       onPress: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignInScreen()),
+                        );
                       },
                     ),
                   ],
