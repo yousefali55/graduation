@@ -43,7 +43,7 @@ class ApartmentDetailsView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          '123 Main Street',
+                          'شقة بجوار جامعة قناة السويس ',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class ApartmentDetailsView extends StatelessWidget {
                           ),
                         ),
                         const Text(
-                          'Beautiful 3-bedroom house with a spacious backyard and modern amenities.',
+                          'شقة للايجار 3 اوض بجوار جامعة قناة السويس دور ثالث اسانسير تشطيب لوكس تكفي خمس افراد متاح جميع الخدمات ( مياه، كهرباء، واي فاي)',
                           style: TextStyle(fontSize: 16),
                         ),
                         const SizedBox(height: 16),
@@ -84,10 +84,10 @@ class ApartmentDetailsView extends StatelessWidget {
                         const SizedBox(height: 18),
                         const Row(
                           children: [
-                            Icon(Icons.attach_money),
+                            Icon(Icons.money_sharp),
                             SizedBox(width: 8),
                             Text(
-                              'Price: \$500,000',
+                              'Price: L.E 1400,000',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,

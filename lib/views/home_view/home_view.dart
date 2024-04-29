@@ -66,7 +66,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   child: ListTile(
                     title: Text(apartment.title),
-                    subtitle: Text('\$${apartment.price}/mo'),
+                    subtitle: Text('L.E ${apartment.price}/mo'),
                     trailing: IconButton(
                       icon: Icon(
                         apartment.isFavorite
