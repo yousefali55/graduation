@@ -6,7 +6,7 @@ import 'package:graduation/mutual_widgets/elevated_button_for_sign_in_up.dart';
 import 'package:graduation/mutual_widgets/repeated_text_field.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
-import 'package:graduation/views/home_view/add-apartments/cubit/add_apartment_cubit.dart';
+import 'package:graduation/views/add-apartments/cubit/add_apartment_cubit.dart';
 
 class AddApartmentView extends StatelessWidget {
   AddApartmentView({super.key});
