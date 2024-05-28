@@ -14,9 +14,7 @@ class ListApartment extends StatelessWidget {
       builder: (context, state) {
         if (state is GetApartmentsSuccess) {
           final apartmentsList = state.apartments;
-          final favoritesList = context
-              .watch<GetApartmentsCubit>()
-              .favorites; // Updated to watch favorites
+          final favoritesList = context.watch<GetApartmentsCubit>().favorites;
 
           return SizedBox(
             width: double.infinity,
@@ -118,16 +116,14 @@ class ListApartment extends StatelessWidget {
                         right: 20.0,
                         child: IconButton(
                           icon: Icon(
-                            favoritesList.contains(apartment)
+                            apartment.isFavorite
                                 ? Icons.favorite
                                 : Icons.favorite_border,
-                            color: favoritesList.contains(apartment)
-                                ? Colors.red // Change color to red if favorite
-                                : null, // Use default color if not favorite
+                            color: apartment.isFavorite ? Colors.red : null,
                           ),
                           onPressed: () {
                             final cubit = context.read<GetApartmentsCubit>();
-                            if (favoritesList.contains(apartment)) {
+                            if (apartment.isFavorite) {
                               cubit.removeFromFavorites(apartment);
                             } else {
                               cubit.addToFavorites(apartment);

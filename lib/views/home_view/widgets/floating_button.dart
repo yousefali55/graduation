@@ -15,7 +15,7 @@ class HomeViewFloatingButton extends StatelessWidget {
             MaterialPageRoute(
                 builder: (_) => BlocProvider(
                       create: (context) => AddApartmentCubit(),
-                      child: AddApartmentView(),
+                      child: const AddApartmentView(),
                     )));
       },
       backgroundColor: Colors.green,

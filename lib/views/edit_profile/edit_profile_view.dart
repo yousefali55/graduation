@@ -138,6 +138,7 @@ class EditProfileScreen extends StatelessWidget {
 
   Widget _buildCard(String label, TextEditingController controller) {
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       elevation: 10,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

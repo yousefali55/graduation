@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:graduation/views/delete_account/data/delete_account_states.dart';
+import 'package:graduation/views/profile_view/delete_account/data/delete_account_states.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 

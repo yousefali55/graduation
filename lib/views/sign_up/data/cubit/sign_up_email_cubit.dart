@@ -11,18 +11,18 @@ class SignUpEmailCubit extends Cubit<SignUpEmailState> {
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
 
-  String? _userType; // Private variable to hold user type
+  String _userType = ''; // Private variable to hold user type
   bool _passwordsMatch = false;
   bool _isSignUpButtonEnabled = false;
 
   SignUpEmailCubit() : super(SignUpEmailInitial());
 
   // Getter for user type
-  String? get userType => _userType;
+  String get userType => _userType;
 
   // Method to set user type
-  void setUserType(String type) {
-    _userType = type;
+  void setUserType(String? type) {
+    _userType = type ?? '';
     checkFormValidity();
   }
 
@@ -40,7 +40,7 @@ class SignUpEmailCubit extends Cubit<SignUpEmailState> {
         usernameController.text.isNotEmpty &&
         firstnameController.text.isNotEmpty &&
         lastnameController.text.isNotEmpty &&
-        _userType != null &&
+        _userType.isNotEmpty &&
         _passwordsMatch;
     emit(
         SignUpFormStatusChanged(isSignUpButtonEnabled: _isSignUpButtonEnabled));
@@ -62,7 +62,7 @@ class SignUpEmailCubit extends Cubit<SignUpEmailState> {
         username: usernameController.text,
         first_name: firstnameController.text,
         last_name: lastnameController.text,
-        userType: _userType ?? '',
+        userType: _userType,
       );
       if (errorMessage == null) {
         emit(SignUpEmailSuccess());
@@ -73,5 +73,18 @@ class SignUpEmailCubit extends Cubit<SignUpEmailState> {
       emit(SignUpEmailFailure(
           errorMessage: 'Error registering user: ${e.toString()}'));
     }
+  }
+
+  // Method to reset all fields
+  void resetFields() {
+    emailController.clear();
+    passwordController.clear();
+    password2Controller.clear();
+    usernameController.clear();
+    firstnameController.clear();
+    lastnameController.clear();
+    _userType = '';
+    _passwordsMatch = false;
+    checkFormValidity(); // Make sure the form validity is updated
   }
 }

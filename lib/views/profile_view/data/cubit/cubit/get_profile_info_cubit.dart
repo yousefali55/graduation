@@ -48,6 +48,7 @@ class GetProfileInfoCubit extends Cubit<GetProfileInfoState> {
 
       if (response.statusCode == 200) {
         final data = response.data;
+        data['saved_apartments'] ??= []; // Default to empty list if null
         final profile = ProfileModel.fromJson(data);
         emit(GetProfileInfoSuccess(profileModel: profile));
       } else {

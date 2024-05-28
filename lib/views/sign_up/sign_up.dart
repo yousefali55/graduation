@@ -6,7 +6,7 @@ import 'package:graduation/mutual_widgets/repeated_text_field.dart';
 import 'package:graduation/mutual_widgets/texts_in_sign_in_up.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
-import 'package:graduation/views/on_board1/on_board1.dart';
+import 'package:graduation/views/sign_in/sign_in.dart';
 import 'package:graduation/views/sign_up/data/cubit/sign_up_email_cubit.dart';
 import 'package:graduation/views/sign_up/data/cubit/sign_up_email_state.dart';
 
@@ -34,30 +34,18 @@ class SignUpScreen extends StatelessWidget {
                 BlocConsumer<SignUpEmailCubit, SignUpEmailState>(
                   listener: (context, state) {
                     if (state is SignUpEmailSuccess) {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext dialogContext) {
-                          Future.delayed(const Duration(seconds: 2), () {
-                            Navigator.pop(dialogContext);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const OnBoardScreenI(),
-                              ),
-                            );
-                          });
-                          return const AlertDialog(
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CircularProgressIndicator(),
-                                SizedBox(height: 16),
-                                Text('Loading..'),
-                              ],
-                            ),
-                          );
-                        },
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Registration Done!'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      signUpCubit.resetFields(); // Reset fields on success
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignInScreen(),
+                        ),
                       );
                     } else if (state is SignUpEmailFailure) {
                       showCustomSnackbar(
@@ -80,7 +68,6 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         child: Form(
                           onChanged: () {
-                            // Update the form whenever there's a change
                             signUpCubit.checkPasswordMatch();
                             signUpCubit.checkFormValidity();
                           },
@@ -127,15 +114,21 @@ class SignUpScreen extends StatelessWidget {
                               ),
                               heightSpace(10),
                               DropdownButtonFormField<String>(
-                                value: signUpCubit.userType, // Initial value
+                                value: signUpCubit.userType ??
+                                    '', // Provide a default value if userType is null
                                 items: const [
                                   DropdownMenuItem(
+                                    value:
+                                        '', // Change the value to an empty string or a unique value
+                                    child: Text('Select User Type'),
+                                  ),
+                                  DropdownMenuItem(
                                     value: 'student',
-                                    child: Text('student'),
+                                    child: Text('Student'),
                                   ),
                                   DropdownMenuItem(
                                     value: 'owner',
-                                    child: Text('owner'),
+                                    child: Text('Owner'),
                                   ),
                                 ],
                                 onChanged: (value) {

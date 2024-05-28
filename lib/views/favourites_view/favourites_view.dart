@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation/views/apartments_details_view/apartment_details.dart';
+import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
+import 'package:graduation/views/home_view/data/cubit/get_apartments_state.dart';
+
+class FavoritesView extends StatelessWidget {
+  const FavoritesView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GetApartmentsCubit, GetApartmentsState>(
+      builder: (context, state) {
+        if (state is GetApartmentsSuccess) {
+          final favoritesList = state.favorites;
+          return ListView.builder(
+            itemCount: favoritesList.length,
+            itemBuilder: (BuildContext context, int index) {
+              final apartment = favoritesList[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ApartmentDetailsView(),
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 16.0,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 4,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ListTile(
+                    title: Text(apartment.title),
+                    subtitle: Text('L.E ${apartment.price}/mo'),
+                    trailing: IconButton(
+                      icon: Icon(
+                        apartment.isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: Colors.red, // Change color if favorite
+                      ),
+                      onPressed: () {
+                        if (apartment.isFavorite) {
+                          context
+                              .read<GetApartmentsCubit>()
+                              .removeFromFavorites(apartment);
+                        } else {
+                          context
+                              .read<GetApartmentsCubit>()
+                              .addToFavorites(apartment);
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        } else {
+          return const Center(
+            child: Text('No favorites yet'),
+          );
+        }
+      },
+    );
+  }
+}

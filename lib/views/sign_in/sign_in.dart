@@ -9,11 +9,13 @@ import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
 import 'package:graduation/views/home_view/home_view.dart';
+import 'package:graduation/views/profile_view/data/cubit/cubit/get_profile_info_cubit.dart';
 import 'package:graduation/views/sign_in/data/cubit/sign_in_email_cubit.dart';
 import 'package:graduation/views/sign_in/data/cubit/sign_in_email_state.dart';
 import 'package:graduation/views/sign_in/widgets/dont_have_account.dart';
 import 'package:graduation/views/sign_in/widgets/forget_pawword.dart';
 import 'package:graduation/views/sign_up/sign_up.dart';
+import 'package:flutter/services.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -33,7 +35,9 @@ class SignInScreen extends StatelessWidget {
               ),
               TextButton(
                 child: const Text('Yes'),
-                onPressed: () => Navigator.of(context).pop(true),
+                onPressed: () {
+                  SystemNavigator.pop();
+                },
               ),
             ],
           ),
@@ -64,24 +68,39 @@ class SignInScreen extends StatelessWidget {
                     ),
                   ),
                   child: BlocConsumer<SignInEmailCubit, SignInEmailState>(
-                    listener: (context, state) {
+                    listener: (context, state) async {
                       if (state is SignInEmailSuccess) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BlocProvider(
-                              create: (context) =>
-                                  GetApartmentsCubit()..fetchApartments(),
-                              child: const HomeView(),
-                            ),
-                          ),
-                        );
+                        final profileCubit = GetProfileInfoCubit()
+                          ..fetchProfileInfo();
+                        profileCubit.stream.listen((profileState) {
+                          if (profileState is GetProfileInfoSuccess) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MultiBlocProvider(
+                                  providers: [
+                                    BlocProvider.value(
+                                      value: profileCubit,
+                                    ),
+                                    BlocProvider(
+                                      create: (context) => GetApartmentsCubit()
+                                        ..fetchApartments(),
+                                    ),
+                                  ],
+                                  child: HomeView(
+                                      userType:
+                                          profileState.profileModel.userType),
+                                ),
+                              ),
+                            );
+                          } else if (profileState is GetProfileInfoFailure) {
+                            showCustomSnackbar(context,
+                                profileState.errorMessage, ColorsManager.red);
+                          }
+                        });
                       } else if (state is SignInEmailFailure) {
                         showCustomSnackbar(
-                          context,
-                          _getErrorMessage(state.errorMessage),
-                          ColorsManager.red,
-                        );
+                            context, state.errorMessage, ColorsManager.red);
                       }
                     },
                     builder: (context, state) {
@@ -156,12 +175,5 @@ class SignInScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getErrorMessage(String errorMessage) {
-    if (errorMessage.contains("email")) {
-      return "Email field must be unique";
-    }
-    return errorMessage;
   }
 }
