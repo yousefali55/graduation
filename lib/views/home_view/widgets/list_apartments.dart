@@ -14,7 +14,6 @@ class ListApartment extends StatelessWidget {
       builder: (context, state) {
         if (state is GetApartmentsSuccess) {
           final apartmentsList = state.apartments;
-          final favoritesList = context.watch<GetApartmentsCubit>().favorites;
 
           return SizedBox(
             width: double.infinity,
@@ -58,7 +57,7 @@ class ListApartment extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
                                 child: Image.network(
-                                  'https://via.placeholder.com/200',
+                                  'https://st4.depositphotos.com/17828278/24401/v/450/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg',
                                   fit: BoxFit.cover,
                                   width: double.infinity,
                                   height: double.infinity,
@@ -137,11 +136,19 @@ class ListApartment extends StatelessWidget {
               },
             ),
           );
-        } else {
+        } else if (state is GetApartmentsLoading) {
           return const Center(
             child: CircularProgressIndicator(
               color: ColorsManager.mainGreen,
             ),
+          );
+        } else if (state is GetApartmentsFailure) {
+          return Center(
+            child: Text('Error: ${state.errorMessage}'),
+          );
+        } else {
+          return const Center(
+            child: Text('No apartments found'),
           );
         }
       },

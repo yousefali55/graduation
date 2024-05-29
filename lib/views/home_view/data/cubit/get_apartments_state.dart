@@ -7,8 +7,8 @@ class GetApartmentsInitial extends GetApartmentsState {}
 class GetApartmentsLoading extends GetApartmentsState {}
 
 class GetApartmentsSuccess extends GetApartmentsState {
-  final List<ApartmentModel> apartments; // Define apartments list
-  final List<ApartmentModel> favorites; // Define favorites list
+  final List<ApartmentModel> apartments;
+  final List<ApartmentModel> favorites;
 
   GetApartmentsSuccess({
     required this.apartments,

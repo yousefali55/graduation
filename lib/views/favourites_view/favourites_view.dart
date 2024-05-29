@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/apartments_details_view/apartment_details.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_state.dart';
@@ -13,6 +14,12 @@ class FavoritesView extends StatelessWidget {
       builder: (context, state) {
         if (state is GetApartmentsSuccess) {
           final favoritesList = state.favorites;
+          if (favoritesList.isEmpty) {
+            return const Center(
+              child: Text('No favorites yet'),
+            );
+          }
+
           return ListView.builder(
             itemCount: favoritesList.length,
             itemBuilder: (BuildContext context, int index) {
@@ -51,17 +58,14 @@ class FavoritesView extends StatelessWidget {
                         apartment.isFavorite
                             ? Icons.favorite
                             : Icons.favorite_border,
-                        color: Colors.red, // Change color if favorite
+                        color: apartment.isFavorite ? Colors.red : null,
                       ),
                       onPressed: () {
+                        final cubit = context.read<GetApartmentsCubit>();
                         if (apartment.isFavorite) {
-                          context
-                              .read<GetApartmentsCubit>()
-                              .removeFromFavorites(apartment);
+                          cubit.removeFromFavorites(apartment);
                         } else {
-                          context
-                              .read<GetApartmentsCubit>()
-                              .addToFavorites(apartment);
+                          cubit.addToFavorites(apartment);
                         }
                       },
                     ),
@@ -69,6 +73,16 @@ class FavoritesView extends StatelessWidget {
                 ),
               );
             },
+          );
+        } else if (state is GetApartmentsLoading) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: ColorsManager.mainGreen,
+            ),
+          );
+        } else if (state is GetApartmentsFailure) {
+          return Center(
+            child: Text('Error: ${state.errorMessage}'),
           );
         } else {
           return const Center(
