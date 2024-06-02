@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/favourites_view/favourites_view.dart';
+import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
+import 'package:graduation/views/home_view/data/cubit/get_apartments_state.dart';
 import 'package:graduation/views/home_view/widgets/list_apartments.dart';
 import 'package:graduation/views/home_view/widgets/floating_button.dart';
 import 'package:graduation/views/profile_view/profile_view.dart';
 import 'package:flutter/services.dart';
+import 'package:graduation/views/search_screen/search_screen.dart';
+import 'package:graduation/views/home_view/data/apartments_model.dart';
 
 class HomeView extends StatefulWidget {
   final String userType;
@@ -17,62 +25,115 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int _currentIndex = 0;
-  final List<Widget> _screens = [
-    const ListApartment(), // Screen for Home icon
-    const Center(child: Text('Explore')), // Screen for Explore icon
-    const FavoritesView(), // Screen for Favorites icon
-    const ProfileView(), // Screen for Profile icon
-  ];
+  String _searchQuery = '';
+  List<ApartmentModel> _allApartments = [];
 
-  final List<String> _titles = [
-    'Home',
-    'Search',
-    'Favorites',
-    'Profile',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the apartments list here if necessary
+    // For now, we'll assume it's handled by the GetApartmentsCubit
+  }
 
-  Future<bool> _onWillPop() async {
-    return await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text(
-              'Exit App',
-            ),
-            content: const Text(
-              'Do you want to exit the app?',
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('No',
-                    style: TextStyle(color: ColorsManager.mainGreen)),
-              ),
-              TextButton(
-                onPressed: () {
-                  SystemNavigator.pop();
-                },
-                child: const Text('Yes',
-                    style: TextStyle(color: ColorsManager.mainGreen)),
-              ),
-            ],
-          ),
-        ) ??
-        false;
+  void _updateSearchQuery(String query) {
+    setState(() {
+      _searchQuery = query;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _screens = [
+      const ListApartment(),
+      BlocBuilder<GetApartmentsCubit, GetApartmentsState>(
+        builder: (context, state) {
+          if (state is GetApartmentsSuccess) {
+            _allApartments = state.apartments; // Update the apartments list
+            return SearchScreen(
+              apartments: _allApartments,
+              query: _searchQuery,
+              onSearchChanged: _updateSearchQuery,
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
+      const FavoritesView(),
+      const ProfileView(),
+    ];
+
+    final List<String> _titles = [
+      'Home',
+      'Search',
+      'Favorites',
+      'Profile',
+    ];
+
+    Future<bool> _onWillPop() async {
+      return await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Exit App'),
+              content: const Text('Do you want to exit the app?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('No',
+                      style: TextStyle(color: ColorsManager.mainGreen)),
+                ),
+                TextButton(
+                  onPressed: () {
+                    SystemNavigator.pop();
+                  },
+                  child: const Text('Yes',
+                      style: TextStyle(color: ColorsManager.mainGreen)),
+                ),
+              ],
+            ),
+          ) ??
+          false;
+    }
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(_titles[_currentIndex]),
+        body: Column(
+          children: [
+            heightSpace(15),
+            _currentIndex == 1
+                ? _buildSearchField()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      widthSpace(48),
+                      Center(
+                        child: Text(
+                          _titles[_currentIndex],
+                          style: GoogleFonts.sora(
+                            fontSize: 20,
+                            color: ColorsManager.mainGreen,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _currentIndex = 1;
+                            });
+                          },
+                          icon: SvgPicture.asset(
+                            'images/svgs/search-normal.svg',
+                          ))
+                    ],
+                  ),
+            Expanded(child: _screens[_currentIndex]),
+          ],
         ),
-        body: _screens[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
-          selectedItemColor: Colors.green, // Adjusted color
+          selectedItemColor: Colors.green,
           unselectedItemColor: Colors.grey,
           currentIndex: _currentIndex,
           onTap: (index) {
@@ -101,6 +162,43 @@ class _HomeViewState extends State<HomeView> {
         ),
         floatingActionButton:
             widget.userType == 'owner' ? const HomeViewFloatingButton() : null,
+      ),
+    );
+  }
+
+  Widget _buildSearchField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide:
+                        const BorderSide(color: ColorsManager.mainGreen)),
+                hintText: 'Search...',
+                prefixIcon: SvgPicture.asset('images/svgs/search-normal.svg'),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onChanged: (value) {
+                _updateSearchQuery(value);
+              },
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: () {
+              setState(() {
+                _currentIndex = 0;
+                _searchQuery = '';
+              });
+            },
+          ),
+        ],
       ),
     );
   }
