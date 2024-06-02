@@ -107,7 +107,7 @@ class ListApartment extends StatelessWidget {
                                 Text(
                                   apartment.description ??
                                       'No description available',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14.0,
                                   ),
                                 ),
@@ -139,7 +139,7 @@ class ListApartment extends StatelessWidget {
             );
           } else if (state is GetApartmentsFailure) {
             return Center(
-              child: Text('${state.errorMessage}'), 
+              child: Text('${state.errorMessage}'),
             );
           } else {
             return FutureBuilder(
