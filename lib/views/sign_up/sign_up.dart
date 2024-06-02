@@ -6,10 +6,9 @@ import 'package:graduation/mutual_widgets/repeated_text_field.dart';
 import 'package:graduation/mutual_widgets/texts_in_sign_in_up.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
-import 'package:graduation/views/on_board1/on_board1.dart';
+import 'package:graduation/views/sign_in/sign_in.dart';
 import 'package:graduation/views/sign_up/data/cubit/sign_up_email_cubit.dart';
 import 'package:graduation/views/sign_up/data/cubit/sign_up_email_state.dart';
-import 'package:graduation/views/sign_up/widgets/send_email_verify.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -35,19 +34,19 @@ class SignUpScreen extends StatelessWidget {
                 BlocConsumer<SignUpEmailCubit, SignUpEmailState>(
                   listener: (context, state) {
                     if (state is SignUpEmailSuccess) {
-                      showCustomSnackbar(
-                        context,
-                        'Success',
-                        ColorsManager.mainGreen,
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Registration Done!'),
+                          duration: Duration(seconds: 2),
+                        ),
                       );
-                      sendEmailVerifyAlertDialogue(context, onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const OnBoardScreenI(),
-                          ),
-                        );
-                      });
+                      signUpCubit.resetFields(); // Reset fields on success
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignInScreen(),
+                        ),
+                      );
                     } else if (state is SignUpEmailFailure) {
                       showCustomSnackbar(
                         context,
@@ -69,11 +68,8 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         child: Form(
                           onChanged: () {
-                            // Update the form whenever there's a change
-                            signUpCubit
-                                .checkPasswordMatch(); // Check if passwords match
-                            signUpCubit
-                                .checkFormValidity(); // Check form validity
+                            signUpCubit.checkPasswordMatch();
+                            signUpCubit.checkFormValidity();
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -118,15 +114,21 @@ class SignUpScreen extends StatelessWidget {
                               ),
                               heightSpace(10),
                               DropdownButtonFormField<String>(
-                                value: signUpCubit.userType, // Initial value
+                                value: signUpCubit.userType ??
+                                    '', // Provide a default value if userType is null
                                 items: const [
                                   DropdownMenuItem(
+                                    value:
+                                        '', // Change the value to an empty string or a unique value
+                                    child: Text('Select User Type'),
+                                  ),
+                                  DropdownMenuItem(
                                     value: 'student',
-                                    child: Text('student'),
+                                    child: Text('Student'),
                                   ),
                                   DropdownMenuItem(
                                     value: 'owner',
-                                    child: Text('owner'),
+                                    child: Text('Owner'),
                                   ),
                                 ],
                                 onChanged: (value) {
@@ -157,12 +159,12 @@ class SignUpScreen extends StatelessWidget {
                                     )
                                   : ElevatedButtonForSignInUp(
                                       signInOrUp: 'Sign Up',
-                                      onPressed: signUpCubit
-                                              .isSignUpButtonEnabled()
-                                          ? () {
-                                              signUpCubit.signUpEmail();
-                                            }
-                                          : null, 
+                                      onPressed:
+                                          signUpCubit.isSignUpButtonEnabled()
+                                              ? () {
+                                                  signUpCubit.signUpEmail();
+                                                }
+                                              : null,
                                     ),
                               heightSpace(10),
                             ],
@@ -177,8 +179,7 @@ class SignUpScreen extends StatelessWidget {
           ),
         ),
       ),
-      resizeToAvoidBottomInset:
-          true, // Allow the screen to resize when the keyboard appears
+      resizeToAvoidBottomInset: true,
     );
   }
 }

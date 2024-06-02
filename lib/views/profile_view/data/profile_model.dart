@@ -12,7 +12,7 @@ class ProfileModel {
   final bool isActive;
   final String? nationalId;
   final String? birthGovernorate;
-  final DateTime? birthDate;
+  final String? birthDate; // Store as string
   final String? gender;
   final List<int> savedApartments;
 
@@ -36,44 +36,57 @@ class ProfileModel {
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
-    return ProfileModel(
-      id: json['id'],
-      username: json['username'],
-      email: json['email'],
-      firstName: json['first_name'] ?? "",
-      lastName: json['last_name'] ?? "",
-      userType: json['user_type'],
-      avatar: json['avatar'],
-      phoneNumber: json['phone_number'] ?? "",
-      address: json['address'] ?? "",
-      isVerified: json['is_verified'],
-      isActive: json['is_active'],
-      nationalId: json['national_id'],
-      birthGovernorate: json['birth_governorate'],
-      birthDate: json['birth_date'] != null ? DateTime.parse(json['birth_date']) : null,
-      gender: json['gender'],
-      savedApartments: List<int>.from(json['saved_apartments'] ?? []),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'username': username,
-      'email': email,
-      'first_name': firstName,
-      'last_name': lastName,
-      'user_type': userType,
-      'avatar': avatar,
-      'phone_number': phoneNumber,
-      'address': address,
-      'is_verified': isVerified,
-      'is_active': isActive,
-      'national_id': nationalId,
-      'birth_governorate': birthGovernorate,
-      'birth_date': birthDate?.toIso8601String(),
-      'gender': gender,
-      'saved_apartments': savedApartments,
-    };
+    try {
+      return ProfileModel(
+        id: json['id'] is int ? json['id'] as int : int.parse(json['id']),
+        username: json['username'],
+        email: json['email'],
+        firstName: json['first_name'] ?? "",
+        lastName: json['last_name'] ?? "",
+        userType: json['user_type'],
+        avatar: json['avatar'],
+        phoneNumber: json['phone_number'] ?? "",
+        address: json['address'] ?? "",
+        isVerified: json['is_verified'],
+        isActive: json['is_active'],
+        nationalId: json['national_id'],
+        birthGovernorate: json['birth_governorate'],
+        birthDate: json['birth_date'] as String?,
+        gender: json['gender'],
+        savedApartments: List<int>.from(
+            (json['saved_apartments'] as List<dynamic>?)?.map((item) {
+                  if (item is int) {
+                    return item;
+                  } else if (item is Map<String, dynamic>) {
+                    return item['id'] as int; // Cast extracted id to int
+                  } else if (item is String) {
+                    return int.parse(item);
+                  } else {
+                    throw FormatException(
+                        "Invalid type in saved_apartments list: ${item.runtimeType}");
+                  }
+                }) ??
+                []),
+      );
+    } catch (e, stackTrace) {
+      // Catch the error along with the stack trace
+      print("Error parsing ProfileModel:");
+      print("Error Type: ${e.runtimeType}");
+      print("Error Message: ${e.toString()}");
+      print("Stack Trace:\n$stackTrace"); // Print the stack trace for debugging
+      return ProfileModel(
+        id: 0,
+        username: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+        userType: "",
+        phoneNumber: "",
+        address: "",
+        isVerified: false,
+        isActive: false,
+        savedApartments: [],
+      );
+    }
   }
 }

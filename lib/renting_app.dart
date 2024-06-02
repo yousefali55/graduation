@@ -17,7 +17,9 @@ class RentingApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: Routes.splash,
           onGenerateRoute: appRouter.generateRoute,
-          theme: ThemeData(scaffoldBackgroundColor: ColorsManager.white),
+          theme: ThemeData(
+            scaffoldBackgroundColor: ColorsManager.white,
+          ),
         ),
       ),
     );

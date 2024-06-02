@@ -1,14 +1,22 @@
-part of 'get_apartments_cubit.dart';
+import 'package:graduation/views/home_view/data/apartments_model.dart';
 
-sealed class GetApartmentsState {}
+abstract class GetApartmentsState {}
 
-final class GetApartmentsInitial extends GetApartmentsState {}
+class GetApartmentsInitial extends GetApartmentsState {}
 
-final class GetApartmentsLoading extends GetApartmentsState {}
+class GetApartmentsLoading extends GetApartmentsState {}
 
-final class GetApartmentsSuccess extends GetApartmentsState {}
+class GetApartmentsSuccess extends GetApartmentsState {
+  final List<ApartmentModel> apartments;
+  final List<ApartmentModel> favorites;
 
-final class GetApartmentsFailure extends GetApartmentsState {
+  GetApartmentsSuccess({
+    required this.apartments,
+    required this.favorites,
+  });
+}
+
+class GetApartmentsFailure extends GetApartmentsState {
   final String errorMessage;
 
   GetApartmentsFailure({required this.errorMessage});

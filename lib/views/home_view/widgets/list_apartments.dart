@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
+import 'package:graduation/views/home_view/data/cubit/get_apartments_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ListApartment extends StatelessWidget {
@@ -139,7 +140,7 @@ class ListApartment extends StatelessWidget {
             );
           } else if (state is GetApartmentsFailure) {
             return Center(
-              child: Text('${state.errorMessage}'),
+              child: Text('${state.errorMessage}'), 
             );
           } else {
             return FutureBuilder(
