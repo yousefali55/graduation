@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
@@ -21,7 +19,7 @@ class ListApartment extends StatelessWidget {
                 onPressed: () {
                   context.read<GetApartmentsCubit>().fetchApartments();
                 },
-                child: Text('elyoo'));
+                child: const Text('elyoo'));
           } else if (state is GetApartmentsSuccess) {
             final apartmentsList =
                 context.read<GetApartmentsCubit>().apartments;
@@ -60,7 +58,7 @@ class ListApartment extends StatelessWidget {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(16.0),
                                   child: Image.network(
-                                    'https://via.placeholder.com/200', // Placeholder image URL
+                                    'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1', // Placeholder image URL
                                     fit: BoxFit.cover,
                                     width: double.infinity,
                                     height: double.infinity,
@@ -108,7 +106,7 @@ class ListApartment extends StatelessWidget {
                                 Text(
                                   apartment.description ??
                                       'No description available',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 14.0,
                                   ),
                                 ),
@@ -140,7 +138,7 @@ class ListApartment extends StatelessWidget {
             );
           } else if (state is GetApartmentsFailure) {
             return Center(
-              child: Text('${state.errorMessage}'), 
+              child: Text(state.errorMessage),
             );
           } else {
             return FutureBuilder(
@@ -160,7 +158,7 @@ class ListApartment extends StatelessWidget {
                       child: Text('Token: $token'), // Display the token
                     );
                   } else {
-                    return Center(
+                    return const Center(
                       child: Text('Token not found'), // No token available
                     );
                   }
