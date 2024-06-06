@@ -1,35 +1,38 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class ImageVerificationService {
-  final String apiUrl = "https://detect.roboflow.com";
+  final String apiUrl = "https://detect.roboflow.com/national-id-wxwph/2";
   final String apiKey = "KF1fPDvKE6FSJ98Tpjhw";
 
   Future<bool> verifyImage(File image) async {
-    final bytes = image.readAsBytesSync();
-    final base64Image = base64Encode(bytes);
+    try {
+      final bytes = await image.readAsBytes();
+      final base64Image = base64Encode(bytes);
 
-    final Dio dio = Dio();
-    final response = await dio.post(
-      apiUrl,
-      data: {
-        'api_key': apiKey,
-        'image': base64Image,
-      },
-      options: Options(
+      final response = await http.post(
+        Uri.parse(apiUrl),
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer $apiKey',
         },
-      ),
-    );
+        body: {
+          'image': base64Image,
+        },
+      );
 
-    if (response.statusCode == 200) {
-      final data = response.data;
-      return data['predictions']
-          .isNotEmpty; // Assuming the API response contains predictions
-    } else {
-      throw Exception('Failed to verify image');
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        print('Image verification response: $data');
+        return data['predictions'].isNotEmpty;
+      } else {
+        print('Error response: ${response.statusCode} ${response.body}');
+        throw Exception('Failed to verify image: ${response.body}');
+      }
+    } catch (e) {
+      print('Exception during image verification: $e');
+      throw Exception('Failed to verify image: $e');
     }
   }
 }

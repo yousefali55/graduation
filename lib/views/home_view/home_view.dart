@@ -43,7 +43,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _screens = [
+    final List<Widget> screens = [
       const ListApartment(),
       BlocBuilder<GetApartmentsCubit, GetApartmentsState>(
         builder: (context, state) {
@@ -63,14 +63,14 @@ class _HomeViewState extends State<HomeView> {
       const ProfileView(),
     ];
 
-    final List<String> _titles = [
+    final List<String> titles = [
       'Home',
       'Search',
       'Favorites',
       'Profile',
     ];
 
-    Future<bool> _onWillPop() async {
+    Future<bool> onWillPop() async {
       return await showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -96,7 +96,7 @@ class _HomeViewState extends State<HomeView> {
     }
 
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: onWillPop,
       child: Scaffold(
         body: Column(
           children: [
@@ -109,7 +109,7 @@ class _HomeViewState extends State<HomeView> {
                       widthSpace(48),
                       Center(
                         child: Text(
-                          _titles[_currentIndex],
+                          titles[_currentIndex],
                           style: GoogleFonts.sora(
                             fontSize: 20,
                             color: ColorsManager.mainGreen,
@@ -128,7 +128,7 @@ class _HomeViewState extends State<HomeView> {
                           ))
                     ],
                   ),
-            Expanded(child: _screens[_currentIndex]),
+            Expanded(child: screens[_currentIndex]),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -175,11 +175,19 @@ class _HomeViewState extends State<HomeView> {
             child: TextField(
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide:
-                        const BorderSide(color: ColorsManager.mainGreen)),
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: ColorsManager.mainGreen),
+                ),
                 hintText: 'Search...',
-                prefixIcon: SvgPicture.asset('images/svgs/search-normal.svg'),
+                prefixIcon: SizedBox(
+                  width: 24, // Adjust the width as needed
+                  height: 24, // Adjust the height as needed
+                  child: SvgPicture.asset(
+                    'images/svgs/search-normal.svg',
+                    fit: BoxFit
+                        .scaleDown, // Ensures the icon scales down within the bounds
+                  ),
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -190,7 +198,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.clear),
+            icon: const Icon(Icons.clear),
             onPressed: () {
               setState(() {
                 _currentIndex = 0;

@@ -6,34 +6,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GetApartmentsCubit extends Cubit<GetApartmentsState> {
   GetApartmentsCubit() : super(GetApartmentsInitial());
-
   final String apiUrl = "http://54.161.17.51:8000/api/apartments/";
   late List<ApartmentModel> apartments = [];
   List<ApartmentModel> favorites = [];
+  Dio dio = Dio();
 
   Future<void> fetchApartments() async {
-    final Dio dio = Dio();
-
+    emit(GetApartmentsLoading());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_token');
+    if (token == null) {
+      emit(GetApartmentsFailure(errorMessage: 'Token not found'));
+      return;
+    }
     try {
-      emit(GetApartmentsLoading());
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('auth_token');
-      if (token == null) {
-        emit(GetApartmentsFailure(errorMessage: 'Token not found'));
-        return;
-      }
-      Response response = await dio.get(
-        apiUrl,
-        options: Options(
-          headers: {
-            'Authorization': 'Token $token',
-          },
-        ),
-      );
+      Response response = await dio.get(apiUrl,
+          options: Options(headers: {'Authorization': 'Token $token'}));
       if (response.statusCode == 200) {
-        final List<dynamic> responseData = response.data['results'];
+        final responseData = response.data['results'] as List;
         apartments =
             responseData.map((json) => ApartmentModel.fromJson(json)).toList();
+        await fetchFavorites(token);
         emit(
             GetApartmentsSuccess(apartments: apartments, favorites: favorites));
       } else {
@@ -45,51 +38,82 @@ class GetApartmentsCubit extends Cubit<GetApartmentsState> {
     }
   }
 
-  Future<void> addToFavorites(ApartmentModel apartment) async {
-    final Dio dio = Dio();
+  Future<void> fetchFavorites(String token) async {
+    try {
+      Response response = await dio.get('http://54.161.17.51:8000/api/profile/',
+          options: Options(headers: {'Authorization': 'Token $token'}));
+      if (response.statusCode == 200) {
+        final responseData = response.data['saved_apartments'] as List;
+        favorites =
+            responseData.map((json) => ApartmentModel.fromJson(json)).toList();
+        for (var favorite in favorites) {
+          for (var apartment in apartments) {
+            if (apartment.id == favorite.id) {
+              apartment.isFavorite = true;
+              break;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      print('Failed to fetch favorites: $e');
+    }
+  }
+
+  Future<void> toggleFavorite(ApartmentModel apartment) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('auth_token');
     if (token == null) {
       emit(GetApartmentsFailure(errorMessage: 'Token not found'));
       return;
     }
-
     try {
-      print('Attempting to add to favorites');
-      print('Apartment ID: ${apartment.id}');
-      print('Token: $token');
+      if (apartment.isFavorite) {
+        await removeFromFavorites(apartment);
+      } else {
+        await addToFavorites(apartment, token);
+      }
+    } catch (e) {
+      emit(GetApartmentsFailure(errorMessage: 'Failed to toggle favorite: $e'));
+    }
+  }
 
-      emit(GetApartmentsLoading());
-      final response = await dio.post(
-        'http://54.161.17.51:8000/api/apartments/${apartment.id}/save/',
-        options: Options(
-          headers: {
-            'Authorization': 'Token $token',
-          },
-        ),
-      );
+  Future<void> addToFavorites(ApartmentModel apartment, String token) async {
+    try {
+      Response response = await dio.post(
+          'http://54.161.17.51:8000/api/apartments/${apartment.id}/save/',
+          options: Options(headers: {'Authorization': 'Token $token'}));
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         favorites.add(apartment);
         apartment.isFavorite = true;
         emit(
             GetApartmentsSuccess(apartments: apartments, favorites: favorites));
+        print('this is apartment id :${apartment.id}');
       } else {
-        print('Response status code: ${response.statusCode}');
-        print('Response data: ${response.data}');
-        emit(GetApartmentsFailure(
-            errorMessage:
-                'Failed to add to favorites: ${response.statusCode}'));
+        final responseBody = response.data;
+        if (response.statusCode == 400 &&
+            responseBody['status'] == 'Apartment already saved') {
+          apartment.isFavorite = true;
+          favorites.add(apartment);
+          emit(GetApartmentsSuccess(
+              apartments: apartments, favorites: favorites));
+        } else {
+          // Enhanced error handling for addToFavorites
+          print(
+              'Error adding to favorites (status code ${response.statusCode}): $responseBody'); // Log detailed error
+          emit(GetApartmentsFailure(
+              errorMessage:
+                  'Failed to add to favorites: $responseBody')); // Emit specific error message
+        }
       }
     } catch (e) {
-      print('Exception: $e');
       emit(
           GetApartmentsFailure(errorMessage: 'Failed to add to favorites: $e'));
     }
   }
 
   Future<void> removeFromFavorites(ApartmentModel apartment) async {
-    final Dio dio = Dio();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('auth_token');
     if (token == null) {
@@ -98,36 +122,38 @@ class GetApartmentsCubit extends Cubit<GetApartmentsState> {
     }
 
     try {
-      print('Attempting to remove from favorites');
-      print('Apartment ID: ${apartment.id}');
-      print('Token: $token');
-
-      emit(GetApartmentsLoading());
-      final response = await dio.delete(
+      Response response = await dio.delete(
         'http://54.161.17.51:8000/api/saved_apartments/${apartment.id}/remove/',
-        options: Options(
-          headers: {
-            'Authorization': 'Token $token',
-          },
-        ),
+        options: Options(headers: {'Authorization': 'Token $token'}),
       );
 
-      if (response.statusCode == 200) {
-        favorites.remove(apartment);
+      if (response.statusCode == 204) {
+        favorites
+            .removeWhere((favApartment) => favApartment.id == apartment.id);
         apartment.isFavorite = false;
-        emit(
-            GetApartmentsSuccess(apartments: apartments, favorites: favorites));
+        emit(GetApartmentsSuccess(
+          apartments: apartments,
+          favorites: favorites,
+        ));
+      } else if (response.statusCode == 404) {
+        // Apartment not found in favorites (already removed)
+        favorites
+            .removeWhere((favApartment) => favApartment.id == apartment.id);
+        emit(GetApartmentsSuccess(
+          apartments: apartments,
+          favorites: favorites,
+        ));
       } else {
-        print('Response status code: ${response.statusCode}');
-        print('Response data: ${response.data}');
+        // Handle other status codes
         emit(GetApartmentsFailure(
-            errorMessage:
-                'Failed to remove from favorites: ${response.statusCode}'));
+          errorMessage:
+              'Failed to remove from favorites: ${response.statusCode}',
+        ));
       }
     } catch (e) {
-      print('Exception: $e');
       emit(GetApartmentsFailure(
-          errorMessage: 'Failed to remove from favorites: $e'));
+        errorMessage: 'Failed to remove from favorites: $e',
+      ));
     }
   }
 }

@@ -23,14 +23,21 @@ class _SubmitNationalIdScreenState extends State<SubmitNationalIdScreen> {
   final _genderController = TextEditingController();
   final _nationalIdController = TextEditingController();
   File? _image;
+  bool _isLoading = false;
 
   Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
+    if (_isLoading) return; // Prevent multiple clicks
+
+    setState(() => _isLoading = true);
+
+    try {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() => _image = File(pickedFile.path));
+      }
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
@@ -54,6 +61,7 @@ class _SubmitNationalIdScreenState extends State<SubmitNationalIdScreen> {
 
   Future<void> _submitNationalId() async {
     if (_formKey.currentState!.validate() && _image != null) {
+      setState(() => _isLoading = true);
       try {
         final File? compressedImage = await compressImage(_image!);
         if (compressedImage == null) {
@@ -100,6 +108,9 @@ class _SubmitNationalIdScreenState extends State<SubmitNationalIdScreen> {
             content: Text('Failed to submit national ID: ${e.toString()}'),
           ),
         );
+        print('Error during national ID submission: $e');
+      } finally {
+        setState(() => _isLoading = false);
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -150,11 +161,14 @@ class _SubmitNationalIdScreenState extends State<SubmitNationalIdScreen> {
                     value!.isEmpty ? 'Please enter your national ID' : null,
               ),
               const SizedBox(height: 16),
-              _image == null
-                  ? TextButton(
+              _isLoading // Show loading indicator or button
+                  ? const Center(child: CircularProgressIndicator())
+                  : TextButton(
                       onPressed: _pickImage,
                       child: const Text('Upload National ID Image'),
-                    )
+                    ),
+              _image == null
+                  ? const SizedBox() // No image, show nothing
                   : Image.file(_image!),
               const SizedBox(height: 16),
               ElevatedButton(
@@ -162,8 +176,11 @@ class _SubmitNationalIdScreenState extends State<SubmitNationalIdScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorsManager.mainGreen,
                 ),
-                child: const Text('Submit'),
-              ),
+                child: const Text(
+                  'Submit',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
             ],
           ),
         ),

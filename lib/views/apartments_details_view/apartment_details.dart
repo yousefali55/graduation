@@ -8,7 +8,10 @@ class ApartmentDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Details'),
+        title: const Text(
+          'Details',
+          style: TextStyle(color: Color.fromARGB(255, 24, 24, 24)),
+        ),
         backgroundColor: ColorsManager.mainGreen, // Custom app bar color
       ),
       body: Padding(
@@ -32,7 +35,7 @@ class ApartmentDetailsView extends StatelessWidget {
               child: Column(
                 children: [
                   Image.network(
-                    'https://via.placeholder.com/300x200', // Property image URL
+                    'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1', // Property image URL
                     fit: BoxFit.cover,
                     height: 200,
                     width: double.infinity,

@@ -1,6 +1,7 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart';
 
 class NationalIdService {
   final String apiUrl = "http://54.161.17.51:8000/api/submit-national-id/";
@@ -18,29 +19,35 @@ class NationalIdService {
       throw Exception('Token not found');
     }
 
-    FormData formData = FormData.fromMap({
-      'birth_date': birthDate,
-      'birth_governorate': birthGovernorate,
-      'gender': gender,
-      'national_id': nationalId,
-      'national_id_image': await MultipartFile.fromFile(image.path,
-          filename: "compressed_image.jpg"),
-    });
+    try {
+      final request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+      request.headers['Authorization'] = 'Token $token';
+      request.headers['Accept'] = 'application/json';
+      request.fields['birth_date'] = birthDate;
+      request.fields['birth_governorate'] = birthGovernorate;
+      request.fields['gender'] = gender;
+      request.fields['national_id'] = nationalId;
+      request.files.add(await http.MultipartFile.fromPath(
+        'national_id_image',
+        image.path,
+        filename: basename(image.path),
+      ));
 
-    final Dio dio = Dio();
+      final response = await request.send();
+      final responseBody = await response.stream.bytesToString();
 
-    Response response = await dio.post(
-      apiUrl,
-      data: formData,
-      options: Options(
-        headers: {
-          'Authorization': 'Token $token',
-          'Accept': 'application/json',
-        },
-      ),
-    );
-
-    if (response.statusCode != 200) {
+      if (response.statusCode == 200) {
+        print('Success: $responseBody');
+      } else {
+        print('Error: ${response.statusCode} $responseBody');
+        if (response.statusCode == 401) {
+          throw Exception('Unauthorized: Please check your login credentials.');
+        } else {
+          throw Exception('Failed to submit national ID');
+        }
+      }
+    } catch (e) {
+      print('Error during national ID submission: $e');
       throw Exception('Failed to submit national ID');
     }
   }
