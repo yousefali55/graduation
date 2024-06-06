@@ -22,10 +22,12 @@ class ListApartment extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const ApartmentDetailsView()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ApartmentDetailsView(
+                            apartment: apartment), // Pass apartment data
+                      ),
+                    );
                   },
                   child: Stack(
                     children: [
@@ -67,8 +69,8 @@ class ListApartment extends StatelessWidget {
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold)),
                                   const SizedBox(height: 4.0),
-                                  const Text('Location not specified',
-                                      style: TextStyle(
+                                  Text(apartment.address,
+                                      style: const TextStyle(
                                           fontSize: 14.0, color: Colors.grey)),
                                   const SizedBox(height: 4.0),
                                   Text(

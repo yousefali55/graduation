@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
 
 class ContactUsScreen extends StatelessWidget {

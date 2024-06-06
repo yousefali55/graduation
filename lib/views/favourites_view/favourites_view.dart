@@ -4,7 +4,6 @@ import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/apartments_details_view/apartment_details.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_state.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritesView extends StatelessWidget {
   const FavoritesView({super.key});
@@ -27,7 +26,8 @@ class FavoritesView extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ApartmentDetailsView()));
+                          builder: (context) =>
+                              ApartmentDetailsView(apartment: apartment)));
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(
