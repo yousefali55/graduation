@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:graduation/mutual_widgets/repeated_text_field.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/add-apartments/cubit/add_apartment_cubit.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddApartmentView extends StatelessWidget {
   const AddApartmentView({super.key});
@@ -20,10 +22,14 @@ class AddApartmentView extends StatelessWidget {
             showCustomSnackbar(context, 'Success, your apartment added',
                 ColorsManager.mainGreen);
           } else if (state is AddApartmentFailure) {
-            showCustomSnackbar(context, 'Failed', ColorsManager.red);
+            showCustomSnackbar(
+                context, 'Failed: ${state.errorMessage}', ColorsManager.red);
           }
         },
         builder: (context, state) {
+          final cubit = context.read<AddApartmentCubit>();
+          final selectedPhoto = cubit.selectedPhoto;
+
           return Scaffold(
             body: Padding(
               padding: const EdgeInsets.all(15),
@@ -32,97 +38,165 @@ class AddApartmentView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     heightSpace(20),
-                    Text(
-                      'Add Apartment',
-                      style: GoogleFonts.sora(
-                        color: ColorsManager.mainGreen,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                    Text('Add Apartment',
+                        style: GoogleFonts.sora(
+                            color: ColorsManager.mainGreen,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w400)),
                     heightSpace(40),
                     RepeatedTextFormField(
                         hintText: 'Enter title',
-                        controller: context.read<AddApartmentCubit>().titleText,
+                        controller: cubit.titleText,
+                        hide: false),
+                    heightSpace(15),
+                    RepeatedTextFormField(
+                        hintText: 'Enter title (English)',
+                        controller: cubit.titleEnText,
+                        hide: false),
+                    heightSpace(15),
+                    RepeatedTextFormField(
+                        hintText: 'Enter title (Arabic)',
+                        controller: cubit.titleArText,
                         hide: false),
                     heightSpace(15),
                     RepeatedTextFormField(
                         hintText: 'Enter description',
-                        controller:
-                            context.read<AddApartmentCubit>().descriptionText,
+                        controller: cubit.descriptionText,
+                        hide: false),
+                    heightSpace(15),
+                    RepeatedTextFormField(
+                        hintText: 'Enter description (English)',
+                        controller: cubit.descriptionEnText,
+                        hide: false),
+                    heightSpace(15),
+                    RepeatedTextFormField(
+                        hintText: 'Enter description (Arabic)',
+                        controller: cubit.descriptionArText,
                         hide: false),
                     heightSpace(15),
                     RepeatedTextFormField(
                         hintText: 'Enter address',
-                        controller:
-                            context.read<AddApartmentCubit>().addressText,
+                        controller: cubit.addressText,
                         hide: false),
                     heightSpace(15),
                     RepeatedTextFormField(
-                      hintText: 'Enter price',
-                      controller: context.read<AddApartmentCubit>().priceText,
-                      hide: false,
-                      keyboardType: TextInputType.number,
-                    ),
+                        hintText: 'Enter price',
+                        controller: cubit.priceText,
+                        hide: false,
+                        keyboardType: TextInputType.number),
                     heightSpace(15),
                     RepeatedTextFormField(
-                      hintText: 'Enter rooms',
-                      controller: context.read<AddApartmentCubit>().roomsText,
-                      hide: false,
-                      keyboardType: TextInputType.number,
-                    ),
+                        hintText: 'Enter rooms',
+                        controller: cubit.roomsText,
+                        hide: false,
+                        keyboardType: TextInputType.number),
                     heightSpace(15),
                     RepeatedTextFormField(
-                      hintText: 'Enter size',
-                      controller: context.read<AddApartmentCubit>().sizeText,
-                      hide: false,
-                      keyboardType: TextInputType.number,
-                    ),
+                        hintText: 'Enter size',
+                        controller: cubit.sizeText,
+                        hide: false,
+                        keyboardType: TextInputType.number),
                     heightSpace(15),
                     RepeatedTextFormField(
-                      hintText: 'Enter beds',
-                      controller: context.read<AddApartmentCubit>().bedsText,
-                      hide: false,
-                      keyboardType: TextInputType.number,
-                    ),
+                        hintText: 'Enter beds',
+                        controller: cubit.bedsText,
+                        hide: false,
+                        keyboardType: TextInputType.number),
                     heightSpace(15),
                     RepeatedTextFormField(
-                      hintText: 'Enter bathrooms',
-                      controller:
-                          context.read<AddApartmentCubit>().bathroomText,
-                      hide: false,
-                      keyboardType: TextInputType.number,
-                    ),
+                        hintText: 'Enter bathrooms',
+                        controller: cubit.bathroomText,
+                        hide: false,
+                        keyboardType: TextInputType.number),
                     heightSpace(15),
                     RepeatedTextFormField(
-                      hintText: 'Enter floor number',
-                      controller:
-                          context.read<AddApartmentCubit>().floorNumberText,
-                      hide: false,
-                      keyboardType: TextInputType.number,
-                    ),
-                    heightSpace(15),
-                    RepeatedTextFormField(
-                        hintText: 'Enter finishing',
-                        controller:
-                            context.read<AddApartmentCubit>().finishingTypeText,
+                        hintText: 'Enter view',
+                        controller: cubit.viewText,
                         hide: false),
                     heightSpace(15),
                     RepeatedTextFormField(
-                      hintText: 'Enter year of construction',
-                      controller: context
-                          .read<AddApartmentCubit>()
-                          .yearOfConstructionText,
-                      hide: false,
-                      keyboardType: TextInputType.number,
-                    ),
-                    heightSpace(30),
-                    ElevatedButtonForSignInUp(
-                      signInOrUp: 'Add apartment',
-                      onPressed: () {
-                        context.read<AddApartmentCubit>().addApartment();
-                      },
-                    )
+                        hintText: 'Enter finishing type',
+                        controller: cubit.finishingTypeText,
+                        hide: false),
+                    heightSpace(15),
+                    RepeatedTextFormField(
+                        hintText: 'Enter floor number',
+                        controller: cubit.floorNumberText,
+                        hide: false,
+                        keyboardType: TextInputType.number),
+                    heightSpace(15),
+                    RepeatedTextFormField(
+                        hintText: 'Enter year of construction',
+                        controller: cubit.yearOfConstructionText,
+                        hide: false,
+                        keyboardType: TextInputType.number),
+                    heightSpace(15),
+                    RepeatedTextFormField(
+                        hintText: 'Enter owner username',
+                        controller: cubit.ownerUsernameText,
+                        hide: false),
+                    heightSpace(15),
+                    RepeatedTextFormField(
+                        hintText: 'Enter owner phone number',
+                        controller: cubit.ownerPhoneNumberText,
+                        hide: false),
+                    heightSpace(15),
+                    RepeatedTextFormField(
+                        hintText: 'Enter owner email',
+                        controller: cubit.ownerEmailText,
+                        hide: false),
+                    heightSpace(15),
+                    if (selectedPhoto != null)
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Stack(
+                          children: [
+                            Image.file(
+                              selectedPhoto,
+                              fit: BoxFit.cover,
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  cubit.removePhoto();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    heightSpace(20),
+                    if (selectedPhoto == null)
+                      TextButton.icon(
+                        icon: const Icon(Icons.photo_camera),
+                        label: const Text('Add Photo'),
+                        onPressed: () async {
+                          final ImagePicker picker = ImagePicker();
+                          final XFile? pickedFile = await picker.pickImage(
+                            source: ImageSource.gallery,
+                          );
+
+                          if (pickedFile != null) {
+                            cubit.addPhoto(File(pickedFile.path));
+                          }
+                        },
+                      ),
+                    heightSpace(20),
+                    (state is AddApartmentLoading)
+                        ? const CircularProgressIndicator()
+                        : ElevatedButtonForSignInUp(
+                            signInOrUp: 'Add apartment',
+                            onPressed: () {
+                              cubit.addApartment();
+                            },
+                          ),
                   ],
                 ),
               ),

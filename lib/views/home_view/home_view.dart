@@ -31,8 +31,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    // Initialize the apartments list here if necessary
-    // For now, we'll assume it's handled by the GetApartmentsCubit
+    context.read<GetApartmentsCubit>().fetchApartments();
   }
 
   void _updateSearchQuery(String query) {
@@ -41,14 +40,22 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  Future<void> _refreshApartments() async {
+    await context.read<GetApartmentsCubit>().fetchApartments();
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = [
-      const ListApartment(),
+      RefreshIndicator(
+        color: ColorsManager.mainGreen,
+        onRefresh: _refreshApartments,
+        child: const ListApartment(),
+      ),
       BlocBuilder<GetApartmentsCubit, GetApartmentsState>(
         builder: (context, state) {
           if (state is GetApartmentsSuccess) {
-            _allApartments = state.apartments; // Update the apartments list
+            _allApartments = state.apartments;
             return SearchScreen(
               apartments: _allApartments,
               query: _searchQuery,

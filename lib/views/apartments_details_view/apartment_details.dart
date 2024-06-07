@@ -93,10 +93,10 @@ class ApartmentDetailsView extends StatelessWidget {
                           const SizedBox(height: 18),
                           Row(
                             children: [
-                              const Icon(Icons.money_sharp),
+                              const Icon(Icons.price_change),
                               const SizedBox(width: 8),
                               Text(
-                                'Price: ${apartment.price}',
+                                'Price: ${apartment.price} E.G.P',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -105,13 +105,13 @@ class ApartmentDetailsView extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 16),
-                          const Row(
+                          Row(
                             children: [
-                              Icon(Icons.phone),
-                              SizedBox(width: 8),
+                              const Icon(Icons.phone),
+                              const SizedBox(width: 8),
                               Text(
-                                'Contact Agent: (123) 456-7890',
-                                style: TextStyle(fontSize: 16),
+                                'Contact Agent: ${apartment.ownerPhoneNumber}',
+                                style: const TextStyle(fontSize: 16),
                               ),
                             ],
                           ),

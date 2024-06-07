@@ -73,7 +73,8 @@ class AddApartmentModel {
       'view': view,
       'finishing_type': finishingType,
       'floor_number': floorNumber.toString(), // Convert to string
-      'year_of_construction': yearOfConstruction.toString(), // Convert to string
+      'year_of_construction':
+          yearOfConstruction.toString(), // Convert to string
     };
   }
 }

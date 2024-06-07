@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'add_apartment_state.dart';
@@ -25,8 +28,12 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
   final TextEditingController finishingTypeText = TextEditingController();
   final TextEditingController floorNumberText = TextEditingController();
   final TextEditingController yearOfConstructionText = TextEditingController();
+  final TextEditingController ownerUsernameText = TextEditingController();
+  final TextEditingController ownerPhoneNumberText = TextEditingController();
+  final TextEditingController ownerEmailText = TextEditingController();
 
   final Dio dio = Dio();
+  File? selectedPhoto;
 
   Future<void> addApartment() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -35,7 +42,13 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
     try {
       emit(AddApartmentLoading());
 
-      final data = {
+      if (selectedPhoto == null) {
+        emit(AddApartmentFailure(errorMessage: "Please select a photo"));
+        return;
+      }
+
+      // Create a map to hold form data
+      Map<String, dynamic> formData = {
         'title': titleText.text,
         'title_en': titleEnText.text,
         'title_ar': titleArText.text,
@@ -52,21 +65,34 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
         'finishing_type': finishingTypeText.text,
         'floor_number': int.tryParse(floorNumberText.text) ?? 0,
         'year_of_construction': int.tryParse(yearOfConstructionText.text) ?? 0,
+        'owner_username': ownerUsernameText.text,
+        'owner_phone_number': ownerPhoneNumberText.text,
+        'owner_email': ownerEmailText.text,
       };
+
+      // Create FormData object and add the photo
+      FormData formDataWithPhoto = FormData.fromMap({
+        ...formData,
+        'photo': await MultipartFile.fromFile(
+          selectedPhoto!.path,
+          filename: selectedPhoto!.path.split('/').last,
+          contentType: MediaType('image', 'jpeg'),
+        ),
+      });
 
       final response = await dio.post(
         apiUrl,
-        data: data,
+        data: formDataWithPhoto,
         options: Options(
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             'Authorization': 'Token $token',
           },
         ),
       );
 
       if (response.statusCode == 201) {
-        print('${response.data}=================================${response.statusCode}');
+        print(jsonEncode(response.data)); // Print the response data
         emit(AddApartmentSuccess());
       } else {
         emit(AddApartmentFailure(
@@ -74,8 +100,25 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
         ));
       }
     } catch (e) {
-      print(e.toString());
       emit(AddApartmentFailure(errorMessage: e.toString()));
     }
   }
+
+  void addPhoto(File photo) {
+    selectedPhoto = photo;
+    emit(AddApartmentPhotoSelected(photo));
+  }
+
+  void removePhoto() {
+    selectedPhoto = null;
+    emit(AddApartmentPhotoRemoved());
+  }
 }
+
+// Define the new states
+class AddApartmentPhotoSelected extends AddApartmentState {
+  final File photo;
+  AddApartmentPhotoSelected(this.photo);
+}
+
+class AddApartmentPhotoRemoved extends AddApartmentState {}

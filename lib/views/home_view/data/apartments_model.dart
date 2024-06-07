@@ -140,6 +140,7 @@ class ApartmentModel {
       'floor_number': floorNumber,
       'year_of_construction': yearOfConstruction,
       'owner': owner,
+      'is_favorite': isFavorite, // Include isFavorite in toJson
     };
   }
 }

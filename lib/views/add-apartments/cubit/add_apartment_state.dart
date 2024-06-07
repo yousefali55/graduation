@@ -1,13 +1,21 @@
 part of 'add_apartment_cubit.dart';
 
 @immutable
-sealed class AddApartmentState {}
+abstract class AddApartmentState {}
 
-final class AddApartmentInitial extends AddApartmentState {}
-final class AddApartmentLoading extends AddApartmentState {}
-final class AddApartmentSuccess extends AddApartmentState {}
-final class AddApartmentFailure extends AddApartmentState {
+class AddApartmentInitial extends AddApartmentState {}
+
+class AddApartmentLoading extends AddApartmentState {}
+
+class AddApartmentSuccess extends AddApartmentState {}
+
+class AddApartmentFailure extends AddApartmentState {
   final String errorMessage;
-
   AddApartmentFailure({required this.errorMessage});
+}
+
+// State for when photos are added
+class AddApartmentPhotosAdded extends AddApartmentState {
+  final List<File> photos;
+  AddApartmentPhotosAdded(this.photos);
 }
