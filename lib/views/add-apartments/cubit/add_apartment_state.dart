@@ -14,8 +14,9 @@ class AddApartmentFailure extends AddApartmentState {
   AddApartmentFailure({required this.errorMessage});
 }
 
-// State for when photos are added
-class AddApartmentPhotosAdded extends AddApartmentState {
-  final List<File> photos;
-  AddApartmentPhotosAdded(this.photos);
+class AddApartmentPhotoSelected extends AddApartmentState {
+  final File photo;
+  AddApartmentPhotoSelected(this.photo);
 }
+
+class AddApartmentPhotoRemoved extends AddApartmentState {}

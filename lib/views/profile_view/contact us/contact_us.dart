@@ -7,6 +7,7 @@ class ContactUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorsManager.mainGreen,
       appBar: AppBar(
         backgroundColor: ColorsManager.mainGreen,
         title: const Text('Contact Us'),
@@ -18,25 +19,26 @@ class ContactUsScreen extends StatelessWidget {
           children: [
             SizedBox(height: 50),
             Card(
-              color: ColorsManager.darkerWhite,
+              color: Color.fromARGB(210, 247, 247, 249),
               shadowColor: Colors.green,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 100),
                 child: Column(
                   children: [
-                    Icon(Icons.location_on, size: 36, color: Colors.green),
+                    Icon(Icons.location_on,
+                        size: 36, color: ColorsManager.mainGreen),
                     Text('Our Address'),
                     Text(
                       'Ismailia',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 50),
-                    Icon(Icons.phone, size: 36, color: Colors.green),
+                    Icon(Icons.phone, size: 36, color: ColorsManager.mainGreen),
                     Text('Call Us'),
                     Text('+201028684980',
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     SizedBox(height: 50),
-                    Icon(Icons.email, size: 36, color: Colors.green),
+                    Icon(Icons.email, size: 36, color: ColorsManager.mainGreen),
                     Text('Email Us'),
                     Text('Renting.support@gmail.com',
                         style: TextStyle(fontWeight: FontWeight.bold)),

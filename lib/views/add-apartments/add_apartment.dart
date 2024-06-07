@@ -19,17 +19,11 @@ class AddApartmentView extends StatelessWidget {
       child: BlocConsumer<AddApartmentCubit, AddApartmentState>(
         listener: (context, state) {
           if (state is AddApartmentSuccess) {
-            showCustomSnackbar(
-              context,
-              'Success, your apartment added',
-              ColorsManager.mainGreen,
-            );
+            showCustomSnackbar(context, 'Success, your apartment added',
+                ColorsManager.mainGreen);
           } else if (state is AddApartmentFailure) {
             showCustomSnackbar(
-              context,
-              'Failed: ${state.errorMessage}',
-              ColorsManager.red,
-            );
+                context, 'Failed: ${state.errorMessage}', ColorsManager.red);
           }
         },
         builder: (context, state) {
@@ -156,24 +150,6 @@ class AddApartmentView extends StatelessWidget {
                       keyboardType: TextInputType.number,
                     ),
                     heightSpace(15),
-                    RepeatedTextFormField(
-                      hintText: 'Enter owner username',
-                      controller: cubit.ownerUsernameText,
-                      hide: false,
-                    ),
-                    heightSpace(15),
-                    RepeatedTextFormField(
-                      hintText: 'Enter owner phone number',
-                      controller: cubit.ownerPhoneNumberText,
-                      hide: false,
-                    ),
-                    heightSpace(15),
-                    RepeatedTextFormField(
-                      hintText: 'Enter owner email',
-                      controller: cubit.ownerEmailText,
-                      hide: false,
-                    ),
-                    heightSpace(15),
                     if (selectedPhoto != null)
                       Container(
                         height: 100,
@@ -200,11 +176,17 @@ class AddApartmentView extends StatelessWidget {
                           ],
                         ),
                       ),
-                    heightSpace(20),
+                    heightSpace(15),
                     if (selectedPhoto == null)
                       TextButton.icon(
-                        icon: const Icon(Icons.photo_camera),
-                        label: const Text('Add Photo'),
+                        icon: const Icon(
+                          Icons.photo_camera,
+                          color: ColorsManager.mainGreen,
+                        ),
+                        label: const Text(
+                          'Add Photo',
+                          style: TextStyle(color: ColorsManager.mainGreen),
+                        ),
                         onPressed: () async {
                           final ImagePicker picker = ImagePicker();
                           final XFile? pickedFile = await picker.pickImage(
@@ -218,7 +200,9 @@ class AddApartmentView extends StatelessWidget {
                       ),
                     heightSpace(20),
                     (state is AddApartmentLoading)
-                        ? const CircularProgressIndicator()
+                        ? const CircularProgressIndicator(
+                            color: ColorsManager.mainGreen,
+                          )
                         : ElevatedButtonForSignInUp(
                             signInOrUp: 'Add apartment',
                             onPressed: () {

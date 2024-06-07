@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/apartments_details_view/apartment_details.dart';
 import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart';
@@ -23,9 +25,8 @@ class ListApartment extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ApartmentDetailsView(
-                        apartment: apartment,
-                      ),
+                      builder: (context) =>
+                          ApartmentDetailsView(apartment: apartment),
                     ),
                   );
                 },
@@ -53,10 +54,15 @@ class ListApartment extends StatelessWidget {
                             height: 200,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16.0),
-                              child: Image.network(
-                                apartment.photos.isNotEmpty
+                              child: CachedNetworkImage(
+                                imageUrl: apartment.photos.isNotEmpty
                                     ? apartment.photos[0].photo
                                     : 'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1',
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                        color: ColorsManager.mainGreen)),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 height: double.infinity,
@@ -83,12 +89,11 @@ class ListApartment extends StatelessWidget {
                                     color: Colors.grey,
                                   ),
                                 ),
-                                const SizedBox(height: 4.0),
-                                Text(
-                                  apartment.description ??
-                                      'No description available',
-                                  style: const TextStyle(fontSize: 14.0),
-                                ),
+                                // Text(
+                                //   apartment.description ??
+                                //       'No description available',
+                                //   style: const TextStyle(fontSize: 14.0),
+                                // ),
                               ],
                             ),
                           ),
@@ -104,11 +109,12 @@ class ListApartment extends StatelessWidget {
                               ),
                             ),
                           ),
+                          heightSpace(10)
                         ],
                       ),
                     ),
                     Positioned(
-                      top: 20.0,
+                      top: 260.0,
                       right: 20.0,
                       child: IconButton(
                         icon: Icon(
