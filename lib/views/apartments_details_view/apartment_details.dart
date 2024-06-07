@@ -3,7 +3,7 @@ import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/home_view/data/apartments_model.dart';
 
 class ApartmentDetailsView extends StatelessWidget {
-  final ApartmentModel apartment; // Receive the apartment data
+  final ApartmentModel apartment;
 
   const ApartmentDetailsView({super.key, required this.apartment});
 
@@ -15,7 +15,7 @@ class ApartmentDetailsView extends StatelessWidget {
           'Details',
           style: TextStyle(color: Color.fromARGB(255, 24, 24, 24)),
         ),
-        backgroundColor: ColorsManager.mainGreen, // Custom app bar color
+        backgroundColor: ColorsManager.mainGreen,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -41,7 +41,7 @@ class ApartmentDetailsView extends StatelessWidget {
                     Image.network(
                       apartment.photos.isNotEmpty
                           ? apartment.photos[0].photo
-                          : 'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1', // Use first photo if available
+                          : 'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1',
                       fit: BoxFit.cover,
                       height: 200,
                       width: double.infinity,
@@ -52,7 +52,7 @@ class ApartmentDetailsView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            apartment.title, // Use apartment title
+                            apartment.title,
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -121,8 +121,7 @@ class ApartmentDetailsView extends StatelessWidget {
                               // Implement action (e.g., open contact form)
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorsManager
-                                  .mainGreen, // Custom button color
+                              backgroundColor: ColorsManager.mainGreen,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),

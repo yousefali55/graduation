@@ -24,7 +24,8 @@ class ListApartment extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ApartmentDetailsView(
-                          apartment: apartment), // Pass apartment data
+                        apartment: apartment,
+                      ),
                     ),
                   );
                 },
@@ -38,10 +39,11 @@ class ListApartment extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16.0),
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 4,
-                              offset: const Offset(0, 3))
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: const Offset(0, 3),
+                          ),
                         ],
                       ),
                       child: Column(
@@ -52,10 +54,13 @@ class ListApartment extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16.0),
                               child: Image.network(
-                                  'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1',
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: double.infinity),
+                                apartment.photos.isNotEmpty
+                                    ? apartment.photos[0].photo
+                                    : 'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1',
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                             ),
                           ),
                           Padding(
@@ -63,30 +68,41 @@ class ListApartment extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(apartment.title,
-                                    style: const TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 4.0),
-                                Text(apartment.address,
-                                    style: const TextStyle(
-                                        fontSize: 14.0, color: Colors.grey)),
+                                Text(
+                                  apartment.title,
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                 const SizedBox(height: 4.0),
                                 Text(
-                                    apartment.description ??
-                                        'No description available',
-                                    style: const TextStyle(fontSize: 14.0)),
+                                  apartment.address,
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const SizedBox(height: 4.0),
+                                Text(
+                                  apartment.description ??
+                                      'No description available',
+                                  style: const TextStyle(fontSize: 14.0),
+                                ),
                               ],
                             ),
                           ),
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text('L.E ${apartment.price}/mo',
-                                style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green)),
+                            child: Text(
+                              'L.E ${apartment.price}/mo',
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -96,7 +112,8 @@ class ListApartment extends StatelessWidget {
                       right: 20.0,
                       child: IconButton(
                         icon: Icon(
-                            apartment.isFavorite ? Icons.favorite : Icons.add),
+                          apartment.isFavorite ? Icons.favorite : Icons.add,
+                        ),
                         onPressed: () {
                           final cubit = context.read<GetApartmentsCubit>();
                           cubit.toggleFavorite(apartment);
@@ -110,14 +127,20 @@ class ListApartment extends StatelessWidget {
           );
         } else if (state is GetApartmentsFailure) {
           return Center(
-              child: Text('Failed to load apartments: ${state.errorMessage}'));
+            child: Text(
+              'Failed to load apartments: ${state.errorMessage}',
+            ),
+          );
         } else if (state is GetApartmentsLoading) {
           return const Center(
-              child: CircularProgressIndicator(
-            color: ColorsManager.mainGreen,
-          ));
+            child: CircularProgressIndicator(
+              color: ColorsManager.mainGreen,
+            ),
+          );
         } else {
-          return const Center(child: Text('No apartments available'));
+          return const Center(
+            child: Text('No apartments available'),
+          );
         }
       },
     );

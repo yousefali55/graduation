@@ -82,29 +82,35 @@ class ApartmentModel {
     required this.floorNumber,
     required this.yearOfConstruction,
     required this.owner,
-    this.isFavorite = false, // Initialize isFavorite property
+    this.isFavorite = false, // Initialize isFavorite to false
   });
 
   factory ApartmentModel.fromJson(Map<String, dynamic> json) {
+    List<Photo> photos = [];
+    if (json['photos'] != null) {
+      photos = List<Photo>.from(
+        json['photos'].map((photoJson) => Photo.fromJson(photoJson)),
+      );
+    }
+
     return ApartmentModel(
       id: json['id'],
-      photos: (json['photos'] as List)
-          .map((photo) => Photo.fromJson(photo))
-          .toList(),
+      photos: photos,
       ownerUsername: json['owner_username'],
       ownerPhoneNumber: json['owner_phone_number'],
       ownerEmail: json['owner_email'],
       title: json['title'],
       titleEn: json['title_en'],
-      titleAr: json.containsKey('title_ar') ? json['title_ar'] : null,
+      titleAr: json['title_ar'],
       description: json['description'],
       descriptionEn: json['description_en'],
-      descriptionAr:
-          json.containsKey('description_ar') ? json['description_ar'] : null,
+      descriptionAr: json['description_ar'],
       address: json['address'],
-      price: double.parse(json['price']),
+      price: double.tryParse(json['price'].toString()) ??
+          0.0, // Handle parsing error
       rooms: json['rooms'],
-      size: double.parse(json['size']),
+      size: double.tryParse(json['size'].toString()) ??
+          0.0, // Handle parsing error
       beds: json['beds'],
       bathrooms: json['bathrooms'],
       view: json['view'],
@@ -112,14 +118,16 @@ class ApartmentModel {
       floorNumber: json['floor_number'],
       yearOfConstruction: json['year_of_construction'],
       owner: json['owner'],
-      isFavorite: false, // Default isFavorite value
     );
   }
 
   Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> photosJson =
+        photos.map((photo) => photo.toJson()).toList();
+
     return {
       'id': id,
-      'photos': photos.map((photo) => photo.toJson()).toList(),
+      'photos': photosJson,
       'owner_username': ownerUsername,
       'owner_phone_number': ownerPhoneNumber,
       'owner_email': ownerEmail,
@@ -140,7 +148,6 @@ class ApartmentModel {
       'floor_number': floorNumber,
       'year_of_construction': yearOfConstruction,
       'owner': owner,
-      'is_favorite': isFavorite, // Include isFavorite in toJson
     };
   }
 }
