@@ -133,20 +133,12 @@ class ListApartment extends StatelessWidget {
           );
         } else if (state is GetApartmentsFailure) {
           return Center(
-            child: Text(
-              'Failed to load apartments: ${state.errorMessage}',
-            ),
-          );
+              child: Text('Failed to load apartments: ${state.errorMessage}'));
         } else if (state is GetApartmentsLoading) {
           return const Center(
-            child: CircularProgressIndicator(
-              color: ColorsManager.mainGreen,
-            ),
-          );
+              child: CircularProgressIndicator(color: ColorsManager.mainGreen));
         } else {
-          return const Center(
-            child: Text('No apartments available'),
-          );
+          return const Center(child: Text('No apartments available'));
         }
       },
     );
