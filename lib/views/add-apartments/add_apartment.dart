@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/mutual_widgets/custom_snack_bar.dart';
-import 'package:graduation/mutual_widgets/elevated_button_for_sign_in_up.dart';
 import 'package:graduation/mutual_widgets/repeated_text_field.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
@@ -49,37 +48,13 @@ class AddApartmentView extends StatelessWidget {
                     heightSpace(40),
                     RepeatedTextFormField(
                       hintText: 'Enter title',
-                      controller: cubit.titleText,
-                      hide: false,
-                    ),
-                    heightSpace(15),
-                    RepeatedTextFormField(
-                      hintText: 'Enter title (English)',
                       controller: cubit.titleEnText,
                       hide: false,
                     ),
                     heightSpace(15),
                     RepeatedTextFormField(
-                      hintText: 'Enter title (Arabic)',
-                      controller: cubit.titleArText,
-                      hide: false,
-                    ),
-                    heightSpace(15),
-                    RepeatedTextFormField(
-                      hintText: 'Enter description',
-                      controller: cubit.descriptionText,
-                      hide: false,
-                    ),
-                    heightSpace(15),
-                    RepeatedTextFormField(
-                      hintText: 'Enter description (English)',
+                      hintText: 'Enter description ',
                       controller: cubit.descriptionEnText,
-                      hide: false,
-                    ),
-                    heightSpace(15),
-                    RepeatedTextFormField(
-                      hintText: 'Enter description (Arabic)',
-                      controller: cubit.descriptionArText,
                       hide: false,
                     ),
                     heightSpace(15),
@@ -177,38 +152,31 @@ class AddApartmentView extends StatelessWidget {
                         ),
                       ),
                     heightSpace(15),
-                    if (selectedPhoto == null)
-                      TextButton.icon(
-                        icon: const Icon(
-                          Icons.photo_camera,
-                          color: ColorsManager.mainGreen,
-                        ),
-                        label: const Text(
-                          'Add Photo',
-                          style: TextStyle(color: ColorsManager.mainGreen),
-                        ),
-                        onPressed: () async {
-                          final ImagePicker picker = ImagePicker();
-                          final XFile? pickedFile = await picker.pickImage(
-                            source: ImageSource.gallery,
-                          );
-
-                          if (pickedFile != null) {
-                            cubit.addPhoto(File(pickedFile.path));
-                          }
-                        },
-                      ),
-                    heightSpace(20),
-                    (state is AddApartmentLoading)
-                        ? const CircularProgressIndicator(
-                            color: ColorsManager.mainGreen,
-                          )
-                        : ElevatedButtonForSignInUp(
-                            signInOrUp: 'Add apartment',
-                            onPressed: () {
+                    ElevatedButton(
+                      onPressed: () async {
+                        final picker = ImagePicker();
+                        final pickedFile = await picker.pickImage(
+                          source: ImageSource.gallery,
+                        );
+                        if (pickedFile != null) {
+                          cubit.addPhoto(File(pickedFile.path));
+                        }
+                      },
+                      child: const Text('Select Photo'),
+                    ),
+                    heightSpace(15),
+                    ElevatedButton(
+                      onPressed: state is AddApartmentLoading
+                          ? null
+                          : () {
                               cubit.addApartment();
                             },
-                          ),
+                      child: state is AddApartmentLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Text('Submit'),
+                    ),
                   ],
                 ),
               ),

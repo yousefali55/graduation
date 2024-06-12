@@ -11,12 +11,8 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
   AddApartmentCubit() : super(AddApartmentInitial());
   final String apiUrl = 'http://54.161.17.51:8000/api/apartments/create/';
 
-  final TextEditingController titleText = TextEditingController();
   final TextEditingController titleEnText = TextEditingController();
-  final TextEditingController titleArText = TextEditingController();
-  final TextEditingController descriptionText = TextEditingController();
   final TextEditingController descriptionEnText = TextEditingController();
-  final TextEditingController descriptionArText = TextEditingController();
   final TextEditingController addressText = TextEditingController();
   final TextEditingController priceText = TextEditingController();
   final TextEditingController roomsText = TextEditingController();
@@ -48,12 +44,12 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
 
       // Create a map to hold form data
       Map<String, dynamic> formData = {
-        'title': titleText.text,
+        'title': 'N/A',
         'title_en': titleEnText.text,
-        'title_ar': titleArText.text,
-        'description': descriptionText.text,
+        'title_ar': 'N/A',
+        'description': 'N/A',
         'description_en': descriptionEnText.text,
-        'description_ar': descriptionArText.text,
+        'description_ar': 'N/A',
         'address': addressText.text,
         'price': double.tryParse(priceText.text) ?? 0.0,
         'rooms': int.tryParse(roomsText.text) ?? 0,

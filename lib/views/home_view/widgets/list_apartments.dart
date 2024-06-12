@@ -15,11 +15,10 @@ class ListApartment extends StatelessWidget {
     return BlocBuilder<GetApartmentsCubit, GetApartmentsState>(
       builder: (context, state) {
         if (state is GetApartmentsSuccess) {
-          final apartmentsList = state.apartments;
           return ListView.builder(
-            itemCount: apartmentsList.length,
-            itemBuilder: (BuildContext context, int index) {
-              final apartment = apartmentsList[index];
+            itemCount: state.apartments.length,
+            itemBuilder: (context, index) {
+              final apartment = state.apartments[index];
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -85,15 +84,8 @@ class ListApartment extends StatelessWidget {
                                 Text(
                                   apartment.address,
                                   style: const TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.grey,
-                                  ),
+                                      fontSize: 14.0, color: Colors.grey),
                                 ),
-                                // Text(
-                                //   apartment.description ??
-                                //       'No description available',
-                                //   style: const TextStyle(fontSize: 14.0),
-                                // ),
                               ],
                             ),
                           ),
@@ -109,7 +101,7 @@ class ListApartment extends StatelessWidget {
                               ),
                             ),
                           ),
-                          heightSpace(10)
+                          heightSpace(10),
                         ],
                       ),
                     ),
