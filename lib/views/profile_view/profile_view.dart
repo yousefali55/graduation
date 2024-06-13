@@ -13,7 +13,7 @@ import 'package:graduation/views/edit_profile/data/edit_profile_states.dart';
 import 'package:graduation/views/edit_profile/edit_profile_view.dart';
 import 'package:graduation/views/profile_view/contact%20us/contact_us.dart';
 import 'package:graduation/views/profile_view/national_id/national_id_view.dart';
-import 'package:graduation/views/profile_view/owner%20apartments/owner_apartments.dart';
+import 'package:graduation/views/profile_view/owner%20apartments/owner_apartments_list.dart';
 import 'package:graduation/views/profile_view/profile_picture/profile_pic_cubit.dart';
 import 'package:graduation/views/sign_in/sign_in.dart';
 import 'package:image_picker/image_picker.dart';
@@ -209,7 +209,7 @@ class ProfileView extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const OwnerApartmentsView()));
+                                        const OwnerApartmentsList()));
                           }),
                       ProfileMenuWidget(
                         color: ColorsManager.mainGreen,

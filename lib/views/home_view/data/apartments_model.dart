@@ -57,7 +57,7 @@ class ApartmentModel {
   final int floorNumber;
   final int yearOfConstruction;
   final int owner;
-  bool isFavorite; // Add isFavorite property
+  bool isFavorite;
 
   ApartmentModel({
     required this.id,
@@ -82,7 +82,7 @@ class ApartmentModel {
     required this.floorNumber,
     required this.yearOfConstruction,
     required this.owner,
-    this.isFavorite = false, // Initialize isFavorite to false
+    this.isFavorite = false,
   });
 
   factory ApartmentModel.fromJson(Map<String, dynamic> json) {
@@ -106,11 +106,9 @@ class ApartmentModel {
       descriptionEn: json['description_en'],
       descriptionAr: json['description_ar'],
       address: json['address'],
-      price: double.tryParse(json['price'].toString()) ??
-          0.0, // Handle parsing error
+      price: double.tryParse(json['price'].toString()) ?? 0.0,
       rooms: json['rooms'],
-      size: double.tryParse(json['size'].toString()) ??
-          0.0, // Handle parsing error
+      size: double.tryParse(json['size'].toString()) ?? 0.0,
       beds: json['beds'],
       bathrooms: json['bathrooms'],
       view: json['view'],
@@ -149,5 +147,57 @@ class ApartmentModel {
       'year_of_construction': yearOfConstruction,
       'owner': owner,
     };
+  }
+
+  ApartmentModel copyWith({
+    int? id,
+    List<Photo>? photos,
+    String? ownerUsername,
+    String? ownerPhoneNumber,
+    String? ownerEmail,
+    String? title,
+    String? titleEn,
+    String? titleAr,
+    String? description,
+    String? descriptionEn,
+    String? descriptionAr,
+    String? address,
+    double? price,
+    int? rooms,
+    double? size,
+    int? beds,
+    int? bathrooms,
+    String? view,
+    String? finishingType,
+    int? floorNumber,
+    int? yearOfConstruction,
+    int? owner,
+    bool? isFavorite,
+  }) {
+    return ApartmentModel(
+      id: id ?? this.id,
+      photos: photos ?? this.photos,
+      ownerUsername: ownerUsername ?? this.ownerUsername,
+      ownerPhoneNumber: ownerPhoneNumber ?? this.ownerPhoneNumber,
+      ownerEmail: ownerEmail ?? this.ownerEmail,
+      title: title ?? this.title,
+      titleEn: titleEn ?? this.titleEn,
+      titleAr: titleAr ?? this.titleAr,
+      description: description ?? this.description,
+      descriptionEn: descriptionEn ?? this.descriptionEn,
+      descriptionAr: descriptionAr ?? this.descriptionAr,
+      address: address ?? this.address,
+      price: price ?? this.price,
+      rooms: rooms ?? this.rooms,
+      size: size ?? this.size,
+      beds: beds ?? this.beds,
+      bathrooms: bathrooms ?? this.bathrooms,
+      view: view ?? this.view,
+      finishingType: finishingType ?? this.finishingType,
+      floorNumber: floorNumber ?? this.floorNumber,
+      yearOfConstruction: yearOfConstruction ?? this.yearOfConstruction,
+      owner: owner ?? this.owner,
+      isFavorite: isFavorite ?? this.isFavorite,
+    );
   }
 }
