@@ -56,13 +56,11 @@ class ProfileView extends StatelessWidget {
               }
             },
           ),
-          BlocListener<GetProfileInfoCubit, GetProfileInfoState>(
-            listener: (context, state) {
-              if (state is GetProfileInfoSuccess) {
-                // Handle profile info update success if needed
-              }
-            },
-          ),
+          // BlocListener<GetProfileInfoCubit, GetProfileInfoState>(
+          //   listener: (context, state) {
+          //     if (state is GetProfileInfoSuccess) {}
+          //   },
+          // ),
         ],
         child: BlocBuilder<GetProfileInfoCubit, GetProfileInfoState>(
           builder: (context, state) {
@@ -200,17 +198,18 @@ class ProfileView extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       const Divider(),
-                      ProfileMenuWidget(
-                          color: ColorsManager.mainGreen,
-                          title: 'Owner apartments',
-                          icon: Icons.apartment,
-                          onPress: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const OwnerApartmentsList()));
-                          }),
+                      if (profile.userType == 'owner')
+                        ProfileMenuWidget(
+                            color: ColorsManager.mainGreen,
+                            title: 'Owner Apartments',
+                            icon: Icons.apartment,
+                            onPress: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const OwnerApartmentsList()));
+                            }),
                       ProfileMenuWidget(
                         color: ColorsManager.mainGreen,
                         title: 'Verify',

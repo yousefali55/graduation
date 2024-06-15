@@ -153,6 +153,8 @@ class AddApartmentView extends StatelessWidget {
                       ),
                     heightSpace(15),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorsManager.mainGreen),
                       onPressed: () async {
                         final picker = ImagePicker();
                         final pickedFile = await picker.pickImage(
@@ -162,10 +164,15 @@ class AddApartmentView extends StatelessWidget {
                           cubit.addPhoto(File(pickedFile.path));
                         }
                       },
-                      child: const Text('Select Photo'),
+                      child: const Text(
+                        'Select Photo',
+                        style: TextStyle(color: ColorsManager.whityBlue),
+                      ),
                     ),
                     heightSpace(15),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorsManager.mainGreen),
                       onPressed: state is AddApartmentLoading
                           ? null
                           : () {
@@ -175,7 +182,10 @@ class AddApartmentView extends StatelessWidget {
                           ? const CircularProgressIndicator(
                               color: Colors.white,
                             )
-                          : const Text('Submit'),
+                          : const Text(
+                              'Submit',
+                              style: TextStyle(color: ColorsManager.whityBlue),
+                            ),
                     ),
                   ],
                 ),

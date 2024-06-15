@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/theming/colors_manager.dart';
 
 class ContactUsScreen extends StatelessWidget {
@@ -9,8 +10,18 @@ class ContactUsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: ColorsManager.mainGreen,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: ColorsManager.mainGreen,
-        title: const Text('Contact Us'),
+        title: Center(
+          child: Text(
+            'Contact Us',
+            style: GoogleFonts.sora(
+              color: ColorsManager.white,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
       ),
       body: const SingleChildScrollView(
         padding: EdgeInsets.all(16.0),

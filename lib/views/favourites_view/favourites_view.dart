@@ -46,25 +46,6 @@ class FavoritesView extends StatelessWidget {
                   child: ListTile(
                     title: Text(apartment.title),
                     subtitle: Text('L.E ${apartment.price}/mo'),
-                    // trailing: IconButton(
-                    //   icon: Icon(
-                    //       apartment.isFavorite
-                    //           ? Icons.favorite
-                    //           : Icons.favorite_border,
-                    //       color: apartment.isFavorite ? Colors.red : null),
-                    //   onPressed: () async {
-                    //     final cubit = context.read<GetApartmentsCubit>();
-                    //     SharedPreferences prefs =
-                    //         await SharedPreferences.getInstance();
-                    //     String? token =
-                    //         prefs.getString('auth_token'); // Retrieve token
-                    //     if (token == null) {
-                    //       // Handle token not found error (e.g., show a message to the user)
-                    //       return;
-                    //     }
-                    //     cubit.toggleFavorite(apartment);
-                    //   },
-                    // ),
                   ),
                 ),
               );

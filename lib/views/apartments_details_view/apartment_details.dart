@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/home_view/data/apartments_model.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,11 +14,18 @@ class ApartmentDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Details',
-          style: TextStyle(color: Color.fromARGB(255, 24, 24, 24)),
+        automaticallyImplyLeading: false,
+        title: Center(
+          child: Text(
+            'Details',
+            style: GoogleFonts.sora(
+              color: ColorsManager.mainGreen,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
-        backgroundColor: ColorsManager.mainGreen,
+        backgroundColor: ColorsManager.white,
       ),
       body: SingleChildScrollView(
         child: Padding(
