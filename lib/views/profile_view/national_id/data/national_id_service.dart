@@ -20,7 +20,7 @@ class NationalIdService {
     }
 
     try {
-      final request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+      final request = http.MultipartRequest('PUT', Uri.parse(apiUrl));
       request.headers['Authorization'] = 'Token $token';
       request.headers['Accept'] = 'application/json';
       request.fields['birth_date'] = birthDate;

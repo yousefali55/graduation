@@ -1,5 +1,7 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/views/profile_view/national_id/data/image_verify_service.dart';
 import 'package:graduation/views/profile_view/national_id/data/national_id_service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -125,7 +127,18 @@ class _SubmitNationalIdScreenState extends State<SubmitNationalIdScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Submit National ID'),
+        backgroundColor: ColorsManager.white,
+        automaticallyImplyLeading: false,
+        title: Center(
+          child: Text(
+            'Submit National ID',
+            style: GoogleFonts.sora(
+              color: ColorsManager.mainGreen,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -165,7 +178,10 @@ class _SubmitNationalIdScreenState extends State<SubmitNationalIdScreen> {
                   ? const Center(child: CircularProgressIndicator())
                   : TextButton(
                       onPressed: _pickImage,
-                      child: const Text('Upload National ID Image'),
+                      child: const Text(
+                        'Upload National ID Image',
+                        style: TextStyle(color: ColorsManager.mainGreen),
+                      ),
                     ),
               _image == null
                   ? const SizedBox() // No image, show nothing

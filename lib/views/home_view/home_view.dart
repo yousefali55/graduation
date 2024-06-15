@@ -181,18 +181,19 @@ class _HomeViewState extends State<HomeView> {
           Expanded(
             child: TextField(
               decoration: InputDecoration(
+                focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: ColorsManager.mainGreen)),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: ColorsManager.mainGreen),
+                  borderSide: const BorderSide(color: ColorsManager.darkGrey),
                 ),
                 hintText: 'Search...',
                 prefixIcon: SizedBox(
-                  width: 24, // Adjust the width as needed
-                  height: 24, // Adjust the height as needed
+                  width: 24,
+                  height: 24,
                   child: SvgPicture.asset(
                     'images/svgs/search-normal.svg',
-                    fit: BoxFit
-                        .scaleDown, // Ensures the icon scales down within the bounds
+                    fit: BoxFit.scaleDown,
                   ),
                 ),
                 border: OutlineInputBorder(
