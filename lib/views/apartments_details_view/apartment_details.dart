@@ -190,38 +190,47 @@ class ApartmentDetailsView extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final phoneNumber = apartment.ownerPhoneNumber;
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    final phoneNumber =
+                                        apartment.ownerPhoneNumber;
 
-                              if (phoneNumber.isNotEmpty) {
-                                final Uri launchUri = Uri(
-                                  scheme: 'tel',
-                                  path: phoneNumber,
-                                );
+                                    if (phoneNumber.isNotEmpty) {
+                                      final Uri launchUri = Uri(
+                                        scheme: 'tel',
+                                        path: phoneNumber,
+                                      );
 
-                                try {
-                                  await launchUrl(launchUri);
-                                } catch (e) {
-                                  // Handle error if phone app can't be opened
-                                  print("Could not launch phone app: $e");
-                                  // Consider showing a snackbar with the error message
-                                }
-                              } else {
-                                // Handle the case where the phone number is missing or empty
-                                print("Phone number is missing or empty.");
-                                // Consider showing a snackbar to the user
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorsManager.mainGreen,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                      try {
+                                        await launchUrl(launchUri);
+                                      } catch (e) {
+                                        // Handle error if phone app can't be opened
+                                        print("Could not launch phone app: $e");
+                                        // Consider showing a snackbar with the error message
+                                      }
+                                    } else {
+                                      // Handle the case where the phone number is missing or empty
+                                      print(
+                                          "Phone number is missing or empty.");
+                                      // Consider showing a snackbar to the user
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: ColorsManager.mainGreen,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Text('Contact Agent',
+                                      style: TextStyle(color: Colors.white)),
+                                ),
                               ),
-                            ),
-                            child: const Text('Contact Agent',
-                                style: TextStyle(color: Colors.white)),
+                            ],
                           ),
                         ],
                       ),

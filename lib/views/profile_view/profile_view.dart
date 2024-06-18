@@ -12,7 +12,6 @@ import 'package:graduation/views/profile_view/delete_account/delete_account.dart
 import 'package:graduation/views/edit_profile/data/edit_profile_states.dart';
 import 'package:graduation/views/edit_profile/edit_profile_view.dart';
 import 'package:graduation/views/profile_view/contact%20us/contact_us.dart';
-import 'package:graduation/views/profile_view/national_id/national_id_view.dart';
 import 'package:graduation/views/profile_view/owner%20apartments/owner_apartments_list.dart';
 import 'package:graduation/views/profile_view/profile_picture/profile_pic_cubit.dart';
 import 'package:graduation/views/sign_in/sign_in.dart';
@@ -56,11 +55,6 @@ class ProfileView extends StatelessWidget {
               }
             },
           ),
-          // BlocListener<GetProfileInfoCubit, GetProfileInfoState>(
-          //   listener: (context, state) {
-          //     if (state is GetProfileInfoSuccess) {}
-          //   },
-          // ),
         ],
         child: BlocBuilder<GetProfileInfoCubit, GetProfileInfoState>(
           builder: (context, state) {
@@ -210,18 +204,6 @@ class ProfileView extends StatelessWidget {
                                       builder: (context) =>
                                           const OwnerApartmentsList()));
                             }),
-                      ProfileMenuWidget(
-                        color: ColorsManager.mainGreen,
-                        title: 'Verify',
-                        icon: Icons.verified,
-                        onPress: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SubmitNationalIdScreen()));
-                        },
-                      ),
                       ProfileMenuWidget(
                         color: ColorsManager.mainGreen,
                         title: 'Change Password',

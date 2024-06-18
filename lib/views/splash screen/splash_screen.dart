@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:graduation/routing/routes.dart';
+import 'package:flutter/services.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:graduation/routing/routes.dart'; // Make sure to replace with your actual import
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
 
@@ -11,6 +13,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final LocalAuthentication auth = LocalAuthentication();
+  bool _appClosed = false; // Add this variable to track app closure
+
   @override
   void initState() {
     super.initState();
@@ -18,9 +23,39 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _initializeApp() async {
-    await Future.delayed(const Duration(seconds: 2));
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
-    Navigator.pushNamed(context, Routes.signIn);
+    try {
+      if (_appClosed) {
+        // Check if app was closed
+        _appClosed = false; // Reset app closed flag
+        Navigator.pushReplacementNamed(context, Routes.signIn);
+        return; // Exit method early
+      }
+
+      bool isAuthenticated = await auth.authenticate(
+        localizedReason: 'Authenticate to proceed',
+      );
+
+      if (isAuthenticated) {
+        await Future.delayed(const Duration(seconds: 2));
+        Navigator.pushReplacementNamed(context, Routes.signIn);
+      } else {
+        print('Biometric authentication failed.');
+        _exitApp();
+      }
+    } on PlatformException catch (e) {
+      print('Error during biometric authentication: $e');
+      _exitApp();
+    }
+
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+  }
+
+  void _exitApp() {
+    _appClosed = true; // Set app closed flag
+    SystemNavigator.pop();
   }
 
   @override
