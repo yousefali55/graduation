@@ -28,7 +28,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  flutter_secure_storage: ^9.2.2
   local_auth: ^2.2.0
   url_launcher: ^6.3.0
   http_parser: ^4.0.2
@@ -41,7 +40,6 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.4
   flutter_cache_manager: ^3.3.1
-  flutter_image_compress: ^2.3.0
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.10+1
   flutter_switch: ^0.3.2
@@ -87,6 +85,20 @@ flutter:
       fonts:
         - asset: fonts/Inter-SemiBold.ttf
         - asset: fonts/Inter-Medium.ttf
+
+    - family: Sora
+      fonts:
+        - asset: fonts/Sora-Bold.ttf
+        - asset: fonts/Sora-ExtraBold.ttf
+        - asset: fonts/Sora-ExtraLight.ttf
+        - asset: fonts/Sora-Light.ttf
+        - asset: fonts/Sora-Medium.ttf
+        - asset: fonts/Sora-Regular.ttf
+        - asset: fonts/Sora-SemiBold.ttf
+        - asset: fonts/Sora-Thin.ttf
+        - asset: fonts/Sora-VariableFont_wght.ttf
+
+
 
     - family: Montserrat
       fonts:

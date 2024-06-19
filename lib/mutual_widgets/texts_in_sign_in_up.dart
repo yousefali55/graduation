@@ -16,18 +16,19 @@ class TextInSignInUp extends StatelessWidget {
         Text(
           textWelcomeOrGetStarted,
           style: GoogleFonts.sora(
-            color: ColorsManager.navyBlue,
-            fontSize: 24,
-            fontWeight: FontWeight.w600
+              color: ColorsManager.navyBlue,
+              fontSize: 24,
+              fontWeight: FontWeight.w600),
+        ),
+        heightSpace(4),
+        Text(
+          'Enter your details below',
+          style: GoogleFonts.sora(
+            color: ColorsManager.darkGrey,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
           ),
         ),
-        heightSpace(12),
-        Text('Enter your details below',
-        style: GoogleFonts.sora(
-          color: ColorsManager.darkGrey,
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-        ),),
       ]),
     );
   }

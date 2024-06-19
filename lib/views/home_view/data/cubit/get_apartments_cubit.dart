@@ -6,7 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GetApartmentsCubit extends Cubit<GetApartmentsState> {
   GetApartmentsCubit() : super(GetApartmentsInitial());
-  final String apiUrl = "http://54.161.17.51:8000/api/apartments/";
+  final String apiUrl =
+      "http://54.161.17.51:8000/api/apartments/?&page_size=20";
   late List<ApartmentModel> apartments = [];
   List<ApartmentModel> favorites = [];
   Dio dio = Dio();

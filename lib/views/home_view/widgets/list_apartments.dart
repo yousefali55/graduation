@@ -8,7 +8,9 @@ import 'package:graduation/views/home_view/data/cubit/get_apartments_cubit.dart'
 import 'package:graduation/views/home_view/data/cubit/get_apartments_state.dart';
 
 class ListApartment extends StatelessWidget {
-  const ListApartment({super.key});
+  const ListApartment({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +75,44 @@ class ListApartment extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                heightSpace(10),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.bed,
+                                      size: 30,
+                                      color: ColorsManager.mainGreen,
+                                    ),
+                                    const SizedBox(width: 4.0),
+                                    Text(
+                                      '${apartment.beds}',
+                                      style: const TextStyle(fontSize: 14.0),
+                                    ),
+                                    const SizedBox(width: 12.0),
+                                    const Icon(
+                                      Icons.bathtub,
+                                      size: 27,
+                                      color: ColorsManager.mainGreen,
+                                    ),
+                                    const SizedBox(width: 4.0),
+                                    Text(
+                                      '${apartment.bathrooms}',
+                                      style: const TextStyle(fontSize: 14.0),
+                                    ),
+                                    const SizedBox(width: 8.0),
+                                    const Icon(
+                                      Icons.bedroom_parent,
+                                      size: 30,
+                                      color: ColorsManager.mainGreen,
+                                    ),
+                                    const SizedBox(width: 4.0),
+                                    Text(
+                                      '${apartment.rooms}',
+                                      style: const TextStyle(fontSize: 14.0),
+                                    ),
+                                  ],
+                                ),
+                                heightSpace(16),
                                 Text(
                                   apartment.title,
                                   style: const TextStyle(
@@ -93,7 +133,7 @@ class ListApartment extends StatelessWidget {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(
-                              '${apartment.price} L.E /mo',
+                              'L.E ${apartment.price}/mo',
                               style: const TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold,
@@ -110,7 +150,10 @@ class ListApartment extends StatelessWidget {
                       right: 20.0,
                       child: IconButton(
                         icon: Icon(
-                          apartment.isFavorite ? Icons.favorite : Icons.add,
+                          apartment.isFavorite
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: apartment.isFavorite ? Colors.red : null,
                         ),
                         onPressed: () {
                           final cubit = context.read<GetApartmentsCubit>();

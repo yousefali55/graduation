@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:graduation/views/profile_view/data/profile_model.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
