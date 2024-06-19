@@ -183,6 +183,7 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
 
   Widget _buildInputTextField(TextEditingController controller, String label) {
     return TextField(
+      maxLines: 2,
       controller: controller,
       decoration: InputDecoration(
         labelText: label,

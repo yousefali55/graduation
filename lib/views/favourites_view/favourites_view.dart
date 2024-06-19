@@ -33,7 +33,7 @@ class FavoritesView extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 16.0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.green,
                     borderRadius: BorderRadius.circular(16.0),
                     boxShadow: [
                       BoxShadow(
@@ -44,8 +44,15 @@ class FavoritesView extends StatelessWidget {
                     ],
                   ),
                   child: ListTile(
-                    title: Text(apartment.title),
-                    subtitle: Text('L.E ${apartment.price}/mo'),
+                    title: Text(
+                      apartment.title,
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      'L.E ${apartment.price}/mo',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               );

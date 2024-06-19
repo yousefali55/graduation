@@ -95,65 +95,105 @@ class ApartmentDetailsView extends StatelessWidget {
                             apartment.description,
                             style: const TextStyle(fontSize: 16),
                           ),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Location:',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            apartment.address,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Beds:',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            apartment.beds.toString(),
-                            style: const TextStyle(fontSize: 16),
+                          const SizedBox(height: 25),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Location :',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(
+                                  apartment.address,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 16),
-                          const Text(
-                            'View: ',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            apartment.view,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Finishing type:',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            apartment.finishingType,
-                            style: const TextStyle(fontSize: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Beds :',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 60.0),
+                                child: Text(
+                                  apartment.beds.toString(),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 16),
-                          const Text(
-                            'Floor number:',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'View : ',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(
+                                  apartment.view,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            apartment.floorNumber.toString(),
-                            style: const TextStyle(fontSize: 16),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Finishing type :',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(
+                                  apartment.finishingType,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Floor number :',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 60.0),
+                                child: Text(
+                                  apartment.floorNumber.toString(),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 16),
                           Row(
@@ -161,7 +201,7 @@ class ApartmentDetailsView extends StatelessWidget {
                               const Icon(Icons.price_change),
                               const SizedBox(width: 8),
                               Text(
-                                'Price: ${apartment.price} L.E',
+                                'Price :                      ${apartment.price} L.E',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -175,8 +215,9 @@ class ApartmentDetailsView extends StatelessWidget {
                               const Icon(Icons.phone),
                               const SizedBox(width: 8),
                               Text(
-                                'Contact Agent: 0${apartment.yearOfConstruction.toString()}',
-                                style: const TextStyle(fontSize: 16),
+                                'Contact Agent :        0${apartment.yearOfConstruction.toString()}',
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),

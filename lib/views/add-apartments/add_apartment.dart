@@ -52,10 +52,26 @@ class AddApartmentView extends StatelessWidget {
                       hide: false,
                     ),
                     heightSpace(15),
-                    RepeatedTextFormField(
-                      hintText: 'Enter description ',
+                    TextFormField(
+                      maxLines: 6,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(17),
+                        hintText: 'Enter description',
+                        hintStyle: GoogleFonts.sora(
+                          color: const Color.fromARGB(128, 36, 52, 67),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                                color: ColorsManager.darkGrey, width: 1)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                                color: ColorsManager.mainGreen, width: 1)),
+                      ),
                       controller: cubit.descriptionEnText,
-                      hide: false,
                     ),
                     heightSpace(15),
                     RepeatedTextFormField(

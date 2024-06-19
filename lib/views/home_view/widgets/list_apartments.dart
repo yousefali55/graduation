@@ -71,7 +71,8 @@ class ListApartment extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.only(
+                                left: 15.0, top: 8, bottom: 8, right: 8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -80,7 +81,7 @@ class ListApartment extends StatelessWidget {
                                   children: [
                                     const Icon(
                                       Icons.bed,
-                                      size: 30,
+                                      size: 32,
                                       color: ColorsManager.mainGreen,
                                     ),
                                     const SizedBox(width: 4.0),
@@ -131,7 +132,7 @@ class ListApartment extends StatelessWidget {
                           ),
                           Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
+                                const EdgeInsets.symmetric(horizontal: 18.0),
                             child: Text(
                               '${apartment.price} L.E/mo',
                               style: const TextStyle(
@@ -146,8 +147,8 @@ class ListApartment extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      top: 260.0,
-                      right: 20.0,
+                      top: 305.0,
+                      right: 30.0,
                       child: IconButton(
                         icon: Icon(
                           apartment.isFavorite
