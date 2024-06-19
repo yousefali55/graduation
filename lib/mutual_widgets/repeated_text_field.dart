@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/theming/colors_manager.dart';
 
+// ignore: must_be_immutable
 class RepeatedTextFormField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;

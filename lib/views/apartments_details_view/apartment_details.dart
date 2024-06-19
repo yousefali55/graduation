@@ -56,7 +56,9 @@ class ApartmentDetailsView extends StatelessWidget {
                       height: 200,
                       width: double.infinity,
                       placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: ColorsManager.mainGreen,
+                        ),
                       ),
                       errorWidget: (context, url, error) =>
                           const Icon(Icons.error),
@@ -154,24 +156,12 @@ class ApartmentDetailsView extends StatelessWidget {
                             style: const TextStyle(fontSize: 16),
                           ),
                           const SizedBox(height: 16),
-                          const Text(
-                            'Year of construction:',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            apartment.yearOfConstruction.toString(),
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 22),
                           Row(
                             children: [
                               const Icon(Icons.price_change),
                               const SizedBox(width: 8),
                               Text(
-                                'Price: ${apartment.price} E.G.P',
+                                'Price: ${apartment.price} L.E',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -185,7 +175,7 @@ class ApartmentDetailsView extends StatelessWidget {
                               const Icon(Icons.phone),
                               const SizedBox(width: 8),
                               Text(
-                                'Contact Agent: ${apartment.ownerPhoneNumber}',
+                                'Contact Agent: 0${apartment.yearOfConstruction.toString()}',
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ],
@@ -198,7 +188,7 @@ class ApartmentDetailsView extends StatelessWidget {
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     final phoneNumber =
-                                        apartment.ownerPhoneNumber;
+                                        '0${apartment.yearOfConstruction.toString()}';
 
                                     if (phoneNumber.isNotEmpty) {
                                       final Uri launchUri = Uri(

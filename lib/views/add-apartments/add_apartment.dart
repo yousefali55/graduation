@@ -119,7 +119,7 @@ class AddApartmentView extends StatelessWidget {
                     ),
                     heightSpace(15),
                     RepeatedTextFormField(
-                      hintText: 'Enter year of construction',
+                      hintText: 'Contact number',
                       controller: cubit.yearOfConstructionText,
                       hide: false,
                       keyboardType: TextInputType.number,

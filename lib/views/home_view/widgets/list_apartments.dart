@@ -133,7 +133,7 @@ class ListApartment extends StatelessWidget {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(
-                              'L.E ${apartment.price}/mo',
+                              '${apartment.price} L.E/mo',
                               style: const TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold,

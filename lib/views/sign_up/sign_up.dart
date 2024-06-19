@@ -114,8 +114,7 @@ class SignUpScreen extends StatelessWidget {
                               ),
                               heightSpace(10),
                               DropdownButtonFormField<String>(
-                                value: signUpCubit.userType ??
-                                    '', // Provide a default value if userType is null
+                                value: signUpCubit.userType,
                                 items: const [
                                   DropdownMenuItem(
                                     value:

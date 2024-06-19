@@ -31,25 +31,23 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
   void initState() {
     super.initState();
     _descriptionController =
-        TextEditingController(text: widget.apartment.description ?? '');
-    _titleController =
-        TextEditingController(text: widget.apartment.titleEn ?? '');
-    _addressController =
-        TextEditingController(text: widget.apartment.address ?? '');
+        TextEditingController(text: widget.apartment.description);
+    _titleController = TextEditingController(text: widget.apartment.titleEn);
+    _addressController = TextEditingController(text: widget.apartment.address);
     _priceController =
-        TextEditingController(text: widget.apartment.price.toString() ?? '');
+        TextEditingController(text: widget.apartment.price.toString());
     _roomsController =
-        TextEditingController(text: widget.apartment.rooms.toString() ?? '');
+        TextEditingController(text: widget.apartment.rooms.toString());
     _sizeController =
-        TextEditingController(text: widget.apartment.size.toString() ?? '');
+        TextEditingController(text: widget.apartment.size.toString());
     _bedsController =
-        TextEditingController(text: widget.apartment.beds.toString() ?? '');
-    _bathroomsController = TextEditingController(
-        text: widget.apartment.bathrooms.toString() ?? '');
-    _floorNumberController = TextEditingController(
-        text: widget.apartment.floorNumber.toString() ?? '');
+        TextEditingController(text: widget.apartment.beds.toString());
+    _bathroomsController =
+        TextEditingController(text: widget.apartment.bathrooms.toString());
+    _floorNumberController =
+        TextEditingController(text: widget.apartment.floorNumber.toString());
     _yearOfConstructionController = TextEditingController(
-        text: widget.apartment.yearOfConstruction.toString() ?? '');
+        text: widget.apartment.yearOfConstruction.toString());
   }
 
   @override
@@ -127,7 +125,7 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
                   _buildInputTextField(_floorNumberController, 'Floor Number'),
                   const SizedBox(height: 10),
                   _buildInputTextField(
-                      _yearOfConstructionController, 'Year of Construction'),
+                      _yearOfConstructionController, 'Contact number'),
                   const SizedBox(height: 20),
                   TextField(
                     controller: _descriptionController,

@@ -61,7 +61,7 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
         'floor_number': int.tryParse(floorNumberText.text) ?? 0,
         'year_of_construction': int.tryParse(yearOfConstructionText.text) ?? 0,
         'owner_username': '',
-        'owner_phone_number': '',
+        'owner_phone_number': int.tryParse(ownerPhoneNumberText.text) ?? 0,
         'owner_email': '',
       };
 
