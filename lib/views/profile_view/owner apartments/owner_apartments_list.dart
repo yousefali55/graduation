@@ -152,7 +152,12 @@ class OwnerApartmentsList extends StatelessWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: const Text('Confirm Deletion'),
+                                    title: const Text(
+                                      'Confirm Deletion',
+                                      style: TextStyle(
+                                          color: ColorsManager.mainGreen,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                     content: const Text(
                                         'Are you sure you want to delete this apartment?'),
                                     actions: [
