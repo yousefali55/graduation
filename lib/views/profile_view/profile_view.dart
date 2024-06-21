@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:graduation/spacing/spacing.dart';
 import 'package:graduation/theming/colors_manager.dart';
+import 'package:graduation/views/profile_view/about%20us/about_us.dart';
 import 'package:graduation/views/profile_view/change%20password/change_password.dart';
 import 'package:graduation/views/profile_view/data/cubit/cubit/get_profile_info_cubit.dart';
 import 'package:graduation/views/profile_view/delete_account/data/delete_account_cubit.dart';
@@ -219,12 +220,24 @@ class ProfileView extends StatelessWidget {
                       ProfileMenuWidget(
                         color: ColorsManager.mainGreen,
                         title: 'Contact Us',
-                        icon: Icons.contact_support,
+                        icon: Icons.question_answer,
                         onPress: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const ContactUsScreen()),
+                          );
+                        },
+                      ),
+                      ProfileMenuWidget(
+                        color: ColorsManager.mainGreen,
+                        title: 'About Us',
+                        icon: Icons.contact_support,
+                        onPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AboutUs()),
                           );
                         },
                       ),
