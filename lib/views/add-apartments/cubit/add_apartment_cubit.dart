@@ -30,17 +30,51 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
   final Dio dio = Dio();
   File? selectedPhoto;
 
+  bool _areFieldsValid() {
+    bool valid = titleEnText.text.isNotEmpty &&
+        descriptionEnText.text.isNotEmpty &&
+        addressText.text.isNotEmpty &&
+        priceText.text.isNotEmpty &&
+        roomsText.text.isNotEmpty &&
+        sizeText.text.isNotEmpty &&
+        bedsText.text.isNotEmpty &&
+        bathroomText.text.isNotEmpty &&
+        viewText.text.isNotEmpty &&
+        finishingTypeText.text.isNotEmpty &&
+        floorNumberText.text.isNotEmpty &&
+        yearOfConstructionText.text.isNotEmpty &&
+        // ownerPhoneNumberText.text.isNotEmpty &&
+        selectedPhoto != null;
+
+    print('titleEnText: ${titleEnText.text}');
+    print('descriptionEnText: ${descriptionEnText.text}');
+    print('addressText: ${addressText.text}');
+    print('priceText: ${priceText.text}');
+    print('roomsText: ${roomsText.text}');
+    print('sizeText: ${sizeText.text}');
+    print('bedsText: ${bedsText.text}');
+    print('bathroomText: ${bathroomText.text}');
+    print('viewText: ${viewText.text}');
+    print('finishingTypeText: ${finishingTypeText.text}');
+    print('floorNumberText: ${floorNumberText.text}');
+    print('yearOfConstructionText: ${yearOfConstructionText.text}');
+    print('ownerPhoneNumberText: ${ownerPhoneNumberText.text}');
+    print('selectedPhoto: ${selectedPhoto != null}');
+
+    return valid;
+  }
+
   Future<void> addApartment() async {
+    if (!_areFieldsValid()) {
+      emit(AddApartmentFailure(errorMessage: "Please, fill all fields"));
+      return;
+    }
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('auth_token');
 
     try {
       emit(AddApartmentLoading());
-
-      if (selectedPhoto == null) {
-        emit(AddApartmentFailure(errorMessage: "Please select a photo"));
-        return;
-      }
 
       // Create a map to hold form data
       Map<String, dynamic> formData = {

@@ -86,7 +86,10 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
         listener: (context, state) {
           if (state is EditOwnerApartmentSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Apartment updated successfully')),
+              const SnackBar(
+                content: Text('Apartment updated successfully'),
+                backgroundColor: ColorsManager.mainGreen,
+              ),
             );
           } else if (state is EditOwnerApartmentFailure) {
             ScaffoldMessenger.of(context).showSnackBar(

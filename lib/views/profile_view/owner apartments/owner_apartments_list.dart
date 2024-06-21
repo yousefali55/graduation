@@ -169,8 +169,7 @@ class OwnerApartmentsList extends StatelessWidget {
                                       TextButton(
                                         child: const Text('Delete',
                                             style: TextStyle(
-                                                color:
-                                                    ColorsManager.mainGreen)),
+                                                color: ColorsManager.red)),
                                         onPressed: () {
                                           context
                                               .read<DeleteOwnerApartmentCubit>()

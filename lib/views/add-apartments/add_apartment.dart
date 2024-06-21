@@ -21,8 +21,7 @@ class AddApartmentView extends StatelessWidget {
             showCustomSnackbar(context, 'Success, your apartment added',
                 ColorsManager.mainGreen);
           } else if (state is AddApartmentFailure) {
-            showCustomSnackbar(
-                context, 'Failed: ${state.errorMessage}', ColorsManager.red);
+            showCustomSnackbar(context, state.errorMessage, ColorsManager.red);
           }
         },
         builder: (context, state) {

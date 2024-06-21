@@ -69,7 +69,7 @@ class ApartmentDetailsView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            apartment.title,
+                            apartment.title ?? 'no info',
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class ApartmentDetailsView extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            apartment.description,
+                            apartment.description ?? 'no info',
                             style: const TextStyle(fontSize: 16),
                           ),
                           const SizedBox(height: 25),

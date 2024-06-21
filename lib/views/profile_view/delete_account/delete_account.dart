@@ -34,7 +34,9 @@ class DeleteAccountDialog extends StatelessWidget {
           backgroundColor: const Color.fromARGB(255, 216, 216, 216),
           title: const Text(
             'Delete Account',
-            style: TextStyle(color: Color.fromARGB(255, 6, 101, 46)),
+            style: TextStyle(
+                color: Color.fromARGB(255, 6, 101, 46),
+                fontWeight: FontWeight.bold),
           ),
           content: const Text(
               'Are you sure you want to delete your account? This action cannot be undone.'),
@@ -55,7 +57,9 @@ class DeleteAccountDialog extends StatelessWidget {
                       color: ColorsManager.mainGreen,
                     )
                   : const Text('Delete',
-                      style: TextStyle(color: Color.fromARGB(255, 147, 18, 8))),
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 218, 42, 30),
+                          fontWeight: FontWeight.w800)),
             ),
           ],
         );
