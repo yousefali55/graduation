@@ -25,7 +25,7 @@ class SearchScreen extends StatelessWidget {
     }).toList();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: ListView.builder(
         itemCount: filteredApartments.length,
         itemBuilder: (BuildContext context, int index) {
