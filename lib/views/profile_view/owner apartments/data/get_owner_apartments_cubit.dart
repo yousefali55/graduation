@@ -31,7 +31,7 @@ class GetOwnerApartmentsCubit extends Cubit<GetOwnerApartmentsState> {
       print('Response data: ${response.data}'); // Debug log
 
       if (response.statusCode == 200) {
-        final responseData = response.data['results'] as List;
+        final responseData = response.data as List;
 
         List<ApartmentModel> apartments =
             responseData.map((json) => ApartmentModel.fromJson(json)).toList();

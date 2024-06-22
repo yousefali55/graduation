@@ -1,4 +1,4 @@
-import 'package:intl/intl.dart'; // Import DateFormat for date parsing
+import 'package:intl/intl.dart';
 
 class Photo {
   final int id;
@@ -19,7 +19,7 @@ class Photo {
       id: json['id'],
       apartmentId: json['apartment'],
       photo: json['photo'],
-      addedAt: dateFormat.parse(json['added_at']), // Corrected parsing
+      addedAt: dateFormat.parse(json['added_at']),
     );
   }
 
@@ -29,7 +29,7 @@ class Photo {
       'id': id,
       'apartment': apartmentId,
       'photo': photo,
-      'added_at': dateFormat.format(addedAt), // Corrected formatting
+      'added_at': dateFormat.format(addedAt),
     };
   }
 }
@@ -86,7 +86,7 @@ class ApartmentModel {
   });
 
   factory ApartmentModel.fromJson(Map<String, dynamic> json) {
-    List<Photo> photos = [];
+    var photos = <Photo>[];
     if (json['photos'] != null) {
       photos = List<Photo>.from(
         json['photos'].map((photoJson) => Photo.fromJson(photoJson)),
@@ -106,8 +106,9 @@ class ApartmentModel {
       descriptionEn: json['description_en'],
       descriptionAr: json['description_ar'],
       address: json['address'],
-      price: double.parse(json['price'].toString()),
-      size: double.parse(json['size'].toString()),
+      price:
+          json['price'] is String ? double.parse(json['price']) : json['price'],
+      size: json['size'] is String ? double.parse(json['size']) : json['size'],
       rooms: json['rooms'],
       beds: json['beds'],
       bathrooms: json['bathrooms'],
