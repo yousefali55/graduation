@@ -48,20 +48,24 @@ class ApartmentDetailsView extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: apartment.photos.isNotEmpty
-                          ? apartment.photos[0].photo
-                          : 'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1',
-                      fit: BoxFit.cover,
+                    SizedBox(
                       height: 200,
-                      width: double.infinity,
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(
-                          color: ColorsManager.mainGreen,
-                        ),
+                      child: PageView.builder(
+                        itemCount: apartment.photos.length,
+                        itemBuilder: (context, index) {
+                          return CachedNetworkImage(
+                            imageUrl: apartment.photos[index].photo,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                color: ColorsManager.mainGreen,
+                              ),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          );
+                        },
                       ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -69,7 +73,7 @@ class ApartmentDetailsView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            apartment.title ?? 'no info',
+                            apartment.title ?? 'No info',
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -92,7 +96,7 @@ class ApartmentDetailsView extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            apartment.description ?? 'no info',
+                            apartment.description ?? 'No info',
                             style: const TextStyle(fontSize: 16),
                           ),
                           const SizedBox(height: 25),
@@ -127,7 +131,7 @@ class ApartmentDetailsView extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(right: 60.0),
+                                padding: const EdgeInsets.only(right: 40.0),
                                 child: Text(
                                   apartment.beds.toString(),
                                   style: const TextStyle(fontSize: 16),
@@ -187,7 +191,7 @@ class ApartmentDetailsView extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(right: 60.0),
+                                padding: const EdgeInsets.only(right: 40.0),
                                 child: Text(
                                   apartment.floorNumber.toString(),
                                   style: const TextStyle(fontSize: 16),

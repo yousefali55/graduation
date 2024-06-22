@@ -26,7 +26,8 @@ class AddApartmentView extends StatelessWidget {
         },
         builder: (context, state) {
           final cubit = context.read<AddApartmentCubit>();
-          final selectedPhoto = cubit.selectedPhoto;
+          final selectedPhotos = cubit.selectedPhotos;
+          final isLoading = state is AddApartmentLoading;
 
           return Scaffold(
             body: Padding(
@@ -134,74 +135,110 @@ class AddApartmentView extends StatelessWidget {
                     ),
                     heightSpace(15),
                     RepeatedTextFormField(
-                      hintText: 'Contact number',
+                      hintText: 'Enter contact number',
                       controller: cubit.yearOfConstructionText,
                       hide: false,
                       keyboardType: TextInputType.number,
                     ),
                     heightSpace(15),
-                    if (selectedPhoto != null)
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                        ),
-                        child: Stack(
-                          children: [
-                            Image.file(
-                              selectedPhoto,
-                              fit: BoxFit.cover,
-                            ),
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  cubit.removePhoto();
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    heightSpace(15),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: ColorsManager.mainGreen),
                       onPressed: () async {
-                        final picker = ImagePicker();
-                        final pickedFile = await picker.pickImage(
-                          source: ImageSource.gallery,
-                        );
-                        if (pickedFile != null) {
-                          cubit.addPhoto(File(pickedFile.path));
+                        final ImagePicker picker = ImagePicker();
+                        final List<XFile> photos =
+                            await picker.pickMultiImage();
+
+                        for (var photo in photos) {
+                          cubit.addPhoto(File(photo.path));
                         }
                       },
                       child: const Text(
-                        'Select Photo',
-                        style: TextStyle(color: ColorsManager.whityBlue),
+                        'Select Photos',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                     heightSpace(15),
+                    selectedPhotos.isEmpty
+                        ? const Text(
+                            'No photos selected',
+                            style: TextStyle(color: ColorsManager.mainGreen),
+                          )
+                        : SizedBox(
+                            height: 200,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: selectedPhotos.length,
+                              itemBuilder: (context, index) {
+                                final photo = selectedPhotos[index];
+                                return Stack(
+                                  children: [
+                                    Image.file(photo,
+                                        width: 150,
+                                        height: 150,
+                                        fit: BoxFit.cover),
+                                    Positioned(
+                                      right: 0,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.delete,
+                                            color: Colors.red),
+                                        onPressed: () =>
+                                            cubit.removePhoto(photo),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                    heightSpace(20),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorsManager.mainGreen),
-                      onPressed: state is AddApartmentLoading
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(
+                            isLoading ? Colors.white : ColorsManager.mainGreen),
+                        shape: WidgetStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        elevation: WidgetStateProperty.all(4),
+                        shadowColor: WidgetStateProperty.all(Colors.black),
+                      ),
+                      onPressed: isLoading
                           ? null
                           : () {
                               cubit.addApartment();
                             },
-                      child: state is AddApartmentLoading
+                      child: isLoading
                           ? const CircularProgressIndicator(
-                              color: Colors.white,
+                              color: ColorsManager.mainGreen,
                             )
-                          : const Text(
-                              'Submit',
-                              style: TextStyle(color: ColorsManager.whityBlue),
+                          : Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'Add Apartment',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                     ),
+                    heightSpace(15),
                   ],
                 ),
               ),

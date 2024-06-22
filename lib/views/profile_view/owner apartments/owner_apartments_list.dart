@@ -35,7 +35,9 @@ class OwnerApartmentsList extends StatelessWidget {
         listener: (context, state) {
           if (state is DeleteOwnerApartmentSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Apartment deleted successfully')),
+              const SnackBar(
+                  backgroundColor: ColorsManager.mainGreen,
+                  content: Text('Apartment deleted successfully')),
             );
             context.read<GetOwnerApartmentsCubit>().fetchApartments();
           } else if (state is DeleteOwnerApartmentFailure) {
@@ -174,6 +176,7 @@ class OwnerApartmentsList extends StatelessWidget {
                                       TextButton(
                                         child: const Text('Delete',
                                             style: TextStyle(
+                                                fontWeight: FontWeight.bold,
                                                 color: ColorsManager.red)),
                                         onPressed: () {
                                           context

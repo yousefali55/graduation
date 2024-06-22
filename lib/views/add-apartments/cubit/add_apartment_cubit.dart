@@ -28,7 +28,7 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
   final TextEditingController ownerEmailText = TextEditingController();
 
   final Dio dio = Dio();
-  File? selectedPhoto;
+  List<File> selectedPhotos = [];
 
   bool _areFieldsValid() {
     bool valid = titleEnText.text.isNotEmpty &&
@@ -43,23 +43,7 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
         finishingTypeText.text.isNotEmpty &&
         floorNumberText.text.isNotEmpty &&
         yearOfConstructionText.text.isNotEmpty &&
-        // ownerPhoneNumberText.text.isNotEmpty &&
-        selectedPhoto != null;
-
-    print('titleEnText: ${titleEnText.text}');
-    print('descriptionEnText: ${descriptionEnText.text}');
-    print('addressText: ${addressText.text}');
-    print('priceText: ${priceText.text}');
-    print('roomsText: ${roomsText.text}');
-    print('sizeText: ${sizeText.text}');
-    print('bedsText: ${bedsText.text}');
-    print('bathroomText: ${bathroomText.text}');
-    print('viewText: ${viewText.text}');
-    print('finishingTypeText: ${finishingTypeText.text}');
-    print('floorNumberText: ${floorNumberText.text}');
-    print('yearOfConstructionText: ${yearOfConstructionText.text}');
-    print('ownerPhoneNumberText: ${ownerPhoneNumberText.text}');
-    print('selectedPhoto: ${selectedPhoto != null}');
+        selectedPhotos.isNotEmpty;
 
     return valid;
   }
@@ -99,16 +83,21 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
         'owner_email': '',
       };
 
-      // Create FormData object and add the photo
-      FormData formDataWithPhoto = FormData.fromMap({
+      // Create FormData object and add the photos
+      List<MultipartFile> photoFiles = [];
+      for (File photo in selectedPhotos) {
+        photoFiles.add(await MultipartFile.fromFile(photo.path,
+            filename: photo.path.split('/').last));
+      }
+
+      FormData formDataWithPhotos = FormData.fromMap({
         ...formData,
-        'photos': await MultipartFile.fromFile(selectedPhoto!.path,
-            filename: selectedPhoto!.path.split('/').last),
+        'photos': photoFiles,
       });
 
       final response = await dio.post(
         apiUrl,
-        data: formDataWithPhoto,
+        data: formDataWithPhotos,
         options: Options(
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -118,7 +107,6 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
       );
 
       if (response.statusCode == 201) {
-        print(jsonEncode(response.data));
         emit(AddApartmentSuccess());
       } else {
         emit(AddApartmentFailure(
@@ -131,12 +119,12 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
   }
 
   void addPhoto(File photo) {
-    selectedPhoto = photo;
+    selectedPhotos.add(photo);
     emit(AddApartmentPhotoSelected(photo));
   }
 
-  void removePhoto() {
-    selectedPhoto = null;
+  void removePhoto(File photo) {
+    selectedPhotos.remove(photo);
     emit(AddApartmentPhotoRemoved());
   }
 }
