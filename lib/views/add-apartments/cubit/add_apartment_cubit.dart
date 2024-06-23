@@ -49,7 +49,8 @@ class AddApartmentCubit extends Cubit<AddApartmentState> {
 
   Future<void> addApartment() async {
     if (!_areFieldsValid()) {
-      emit(AddApartmentFailure(errorMessage: "Please, fill all fields"));
+      emit(
+          AddApartmentFailure(errorMessage: "Please, provide all information"));
       return;
     }
 
