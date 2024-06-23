@@ -19,6 +19,8 @@ class OwnerApartmentsList extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        foregroundColor: Colors.white,
         title: Center(
             child: Text(
           'Owner Apartments',
