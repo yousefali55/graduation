@@ -28,13 +28,10 @@ class EditOwnerApartmentCubit extends Cubit<EditOwnerApartmentState> {
       print('Sending PUT request to $apiUrl/${apartment.id}/update/');
       print('Request data: ${apartment.toJson()}');
 
-      final response = await dio.patch(
+      final response = await dio.put(
         '$apiUrl/${apartment.id}/update/',
         data: apartment.toJson(),
       );
-
-      print('Response status code: ${response.statusCode}');
-      print('Response data: ${response.data}');
 
       if (response.statusCode == 200) {
         emit(EditOwnerApartmentSuccess(apartment: apartment));

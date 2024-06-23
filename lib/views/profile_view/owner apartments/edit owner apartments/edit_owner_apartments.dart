@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/home_view/data/apartments_model.dart';
 import 'package:graduation/views/profile_view/owner%20apartments/edit%20owner%20apartments/data/edit_owner_apartment_cubit.dart';
@@ -31,9 +28,6 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
   late TextEditingController _yearOfConstructionController;
   late TextEditingController _viewController;
   late TextEditingController _finishingTypeController;
-  List<XFile>? _selectedImages;
-
-  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -78,12 +72,12 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
     super.dispose();
   }
 
-  Future<void> _pickImages() async {
-    final List<XFile> images = await _picker.pickMultiImage();
-    setState(() {
-      _selectedImages = images;
-    });
-  }
+  // Future<void> _pickImages() async {
+  //   final List<XFile> images = await _picker.pickMultiImage();
+  //   setState(() {
+  //     _selectedImages = images;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +106,18 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
               ),
             );
           } else if (state is EditOwnerApartmentFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage)),
-            );
+            if (state.errorMessage.contains('200')) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Apartment updated successfully'),
+                  backgroundColor: ColorsManager.mainGreen,
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.errorMessage)),
+              );
+            }
           }
         },
         child: BlocBuilder<EditOwnerApartmentCubit, EditOwnerApartmentState>(
@@ -156,26 +159,26 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
                   _buildInputTextField(
                       _finishingTypeController, 'Finishing Type'),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _pickImages,
-                    child: const Text('Select Photos from Gallery'),
-                  ),
-                  const SizedBox(height: 10),
-                  _selectedImages != null
-                      ? Wrap(
-                          spacing: 8.0,
-                          runSpacing: 8.0,
-                          children: _selectedImages!.map((image) {
-                            return Image.file(
-                              File(image.path),
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            );
-                          }).toList(),
-                        )
-                      : const Text('No images selected'),
-                  const SizedBox(height: 20),
+                  // ElevatedButton(
+                  //   onPressed: _pickImages,
+                  //   child: const Text('Select Photos from Gallery'),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // _selectedImages != null
+                  //     ? Wrap(
+                  //         spacing: 8.0,
+                  //         runSpacing: 8.0,
+                  //         children: _selectedImages!.map((image) {
+                  //           return Image.file(
+                  //             File(image.path),
+                  //             width: 100,
+                  //             height: 100,
+                  //             fit: BoxFit.cover,
+                  //           );
+                  //         }).toList(),
+                  //       )
+                  //     : const Text('No images selected'),
+                  // const SizedBox(height: 20),
                   TextField(
                     controller: _descriptionController,
                     decoration: const InputDecoration(
@@ -210,14 +213,14 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
                             int.tryParse(_yearOfConstructionController.text),
                         view: _viewController.text,
                         finishingType: _finishingTypeController.text,
-                        photos: _selectedImages?.map((image) {
-                          return Photo(
-                            id: 0,
-                            apartmentId: widget.apartment.id,
-                            photo: image.path,
-                            addedAt: DateTime.now(),
-                          );
-                        }).toList(),
+                        // photos: _selectedImages?.map((image) {
+                        //   return Photo(
+                        //     id: 0,
+                        //     apartmentId: widget.apartment.id,
+                        //     photo: image.path,
+                        //     addedAt: DateTime.now(),
+                        //   );
+                        // }).toList(),
                       );
 
                       context
