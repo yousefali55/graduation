@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation/theming/colors_manager.dart';
@@ -25,7 +26,7 @@ class SearchScreen extends StatelessWidget {
     }).toList();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.all(16.0),
       child: ListView.builder(
         itemCount: filteredApartments.length,
         itemBuilder: (BuildContext context, int index) {
@@ -40,47 +41,93 @@ class SearchScreen extends StatelessWidget {
                 ),
               );
             },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 4,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
+            child: Card(
+              elevation: 4,
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20), // More rounded corners
               ),
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Stack(
+                // Use Stack for overlaying elements
                 children: [
-                  Text(
-                    apartment.title,
-                    style: GoogleFonts.sora(
-                      color: ColorsManager.mainGreen,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                  // Background Image with a cool effect
+                  Hero(
+                    tag: apartment.photos.isNotEmpty
+                        ? apartment.photos[0].photo
+                        : 'placeholder',
+                    child: CachedNetworkImage(
+                      imageUrl: apartment.photos.isNotEmpty
+                          ? apartment.photos[0].photo
+                          : 'https://via.placeholder.com/150',
+                      width: double.infinity,
+                      height: 180,
+                      fit: BoxFit.cover,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                            colorFilter: const ColorFilter.mode(
+                              Colors.black26, // Add a slight black overlay
+                              BlendMode.darken,
+                            ),
+                          ),
+                        ),
+                      ),
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
                   ),
-                  const SizedBox(height: 4.0),
-                  Text(
-                    apartment.address,
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 4.0),
-                  Text(
-                    'L.E ${apartment.price}/mo',
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
+
+                  // Content positioned on top of the image
+                  Positioned(
+                    bottom: 28,
+                    left: 16,
+                    right: 16, // Align content to the edges
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(
+                            0.8), // Semi-transparent white background
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            apartment.title,
+                            style: GoogleFonts.sora(
+                              color: ColorsManager.darkGrey,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            apartment.address,
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors
+                                    .grey), // Smaller address for more space
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'L.E ${apartment.price}/mo',
+                            style: GoogleFonts.sora(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

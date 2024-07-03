@@ -9,6 +9,7 @@ class HomeViewFloatingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: 'add',
       onPressed: () {
         Navigator.push(
             context,

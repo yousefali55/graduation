@@ -51,19 +51,32 @@ class ApartmentDetailsView extends StatelessWidget {
                     SizedBox(
                       height: 200,
                       child: PageView.builder(
-                        itemCount: apartment.photos.length,
+                        itemCount: apartment.photos.isNotEmpty
+                            ? apartment.photos.length
+                            : 1,
                         itemBuilder: (context, index) {
-                          return CachedNetworkImage(
-                            imageUrl: apartment.photos[index].photo,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(
-                                color: ColorsManager.mainGreen,
+                          if (apartment.photos.isNotEmpty) {
+                            return Hero(
+                              tag: apartment.photos[index]
+                                  .photo, // Unique tag for each photo
+                              child: CachedNetworkImage(
+                                imageUrl: apartment.photos[index].photo,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                  color: ColorsManager.mainGreen,
+                                )),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
                               ),
-                            ),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          );
+                            );
+                          } else {
+                            return CachedNetworkImage(
+                              imageUrl:
+                                  'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1',
+                              fit: BoxFit.cover,
+                            );
+                          }
                         },
                       ),
                     ),
@@ -204,11 +217,13 @@ class ApartmentDetailsView extends StatelessWidget {
                             children: [
                               const Icon(Icons.price_change),
                               const SizedBox(width: 8),
-                              Text(
-                                'Price :                      ${apartment.price} L.E',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                              Flexible(
+                                child: Text(
+                                  'Price : ${apartment.price} L.E',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ],
@@ -218,10 +233,14 @@ class ApartmentDetailsView extends StatelessWidget {
                             children: [
                               const Icon(Icons.phone),
                               const SizedBox(width: 8),
-                              Text(
-                                'Contact Agent :        0${apartment.yearOfConstruction.toString()}',
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              Flexible(
+                                child: Text(
+                                  'Contact Agent : 0${apartment.yearOfConstruction.toString()}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ],
                           ),

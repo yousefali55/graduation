@@ -72,13 +72,6 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
     super.dispose();
   }
 
-  // Future<void> _pickImages() async {
-  //   final List<XFile> images = await _picker.pickMultiImage();
-  //   setState(() {
-  //     _selectedImages = images;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,26 +152,6 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
                   _buildInputTextField(
                       _finishingTypeController, 'Finishing Type'),
                   const SizedBox(height: 20),
-                  // ElevatedButton(
-                  //   onPressed: _pickImages,
-                  //   child: const Text('Select Photos from Gallery'),
-                  // ),
-                  // const SizedBox(height: 10),
-                  // _selectedImages != null
-                  //     ? Wrap(
-                  //         spacing: 8.0,
-                  //         runSpacing: 8.0,
-                  //         children: _selectedImages!.map((image) {
-                  //           return Image.file(
-                  //             File(image.path),
-                  //             width: 100,
-                  //             height: 100,
-                  //             fit: BoxFit.cover,
-                  //           );
-                  //         }).toList(),
-                  //       )
-                  //     : const Text('No images selected'),
-                  // const SizedBox(height: 20),
                   TextField(
                     controller: _descriptionController,
                     decoration: const InputDecoration(
@@ -199,6 +172,27 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     onPressed: () {
+                      if (_titleController.text.isEmpty ||
+                          _descriptionController.text.isEmpty ||
+                          _addressController.text.isEmpty ||
+                          _priceController.text.isEmpty ||
+                          _roomsController.text.isEmpty ||
+                          _sizeController.text.isEmpty ||
+                          _bedsController.text.isEmpty ||
+                          _bathroomsController.text.isEmpty ||
+                          _floorNumberController.text.isEmpty ||
+                          _yearOfConstructionController.text.isEmpty ||
+                          _viewController.text.isEmpty ||
+                          _finishingTypeController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text('Please, fill all fields'),
+                          ),
+                        );
+                        return;
+                      }
+
                       final updatedApartment = widget.apartment.copyWith(
                         titleEn: _titleController.text,
                         descriptionEn: _descriptionController.text,
@@ -213,14 +207,6 @@ class _EditOwnerApartmentViewState extends State<EditOwnerApartmentView> {
                             int.tryParse(_yearOfConstructionController.text),
                         view: _viewController.text,
                         finishingType: _finishingTypeController.text,
-                        // photos: _selectedImages?.map((image) {
-                        //   return Photo(
-                        //     id: 0,
-                        //     apartmentId: widget.apartment.id,
-                        //     photo: image.path,
-                        //     addedAt: DateTime.now(),
-                        //   );
-                        // }).toList(),
                       );
 
                       context

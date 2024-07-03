@@ -55,149 +55,159 @@ class OwnerApartmentsList extends StatelessWidget {
                 return const Center(child: Text('No apartments available'));
               }
 
-              return ListView.builder(
-                itemCount: state.apartments.length,
-                itemBuilder: (context, index) {
-                  final apartment = state.apartments[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditOwnerApartmentView(
-                            apartment: apartment,
+              return RefreshIndicator(
+                color: ColorsManager.mainGreen,
+                onRefresh: () async {
+                  context.read<GetOwnerApartmentsCubit>().fetchApartments();
+                },
+                child: ListView.builder(
+                  itemCount: state.apartments.length,
+                  itemBuilder: (context, index) {
+                    final apartment = state.apartments[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditOwnerApartmentView(
+                              apartment: apartment,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    child: Stack(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 4,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 200,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  child: CachedNetworkImage(
-                                    imageUrl: apartment.photos.isNotEmpty
-                                        ? apartment.photos[0].photo
-                                        : 'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1',
-                                    placeholder: (context, url) => const Center(
-                                        child: CircularProgressIndicator(
-                                            color: ColorsManager.mainGreen)),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
+                        );
+                      },
+                      child: Stack(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 200,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    child: CachedNetworkImage(
+                                      imageUrl: apartment.photos.isNotEmpty
+                                          ? apartment.photos[0].photo
+                                          : 'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1',
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                              child: CircularProgressIndicator(
+                                                  color:
+                                                      ColorsManager.mainGreen)),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      apartment.title,
-                                      style: const TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4.0),
-                                    Text(
-                                      apartment.address,
-                                      style: const TextStyle(
-                                          fontSize: 14.0, color: Colors.grey),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  'L.E ${apartment.price}/mo',
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                              ),
-                              heightSpace(10),
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                          right: 30,
-                          top: 240,
-                          child: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      'Confirm Deletion',
-                                      style: TextStyle(
-                                          color: ColorsManager.mainGreen,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    content: const Text(
-                                        'Are you sure you want to delete this apartment?'),
-                                    actions: [
-                                      TextButton(
-                                        child: const Text(
-                                          'Cancel',
-                                          style: TextStyle(
-                                              color: ColorsManager.mainGreen),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        apartment.title,
+                                        style: const TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
                                       ),
-                                      TextButton(
-                                        child: const Text('Delete',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: ColorsManager.red)),
-                                        onPressed: () {
-                                          context
-                                              .read<DeleteOwnerApartmentCubit>()
-                                              .deleteApartment(apartment.id);
-                                          Navigator.of(context).pop();
-                                        },
+                                      const SizedBox(height: 4.0),
+                                      Text(
+                                        apartment.address,
+                                        style: const TextStyle(
+                                            fontSize: 14.0, color: Colors.grey),
                                       ),
                                     ],
-                                  );
-                                },
-                              );
-                            },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Text(
+                                    'L.E ${apartment.price}/mo',
+                                    style: const TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ),
+                                heightSpace(10),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                          Positioned(
+                            right: 30,
+                            top: 240,
+                            child: IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                        'Confirm Deletion',
+                                        style: TextStyle(
+                                            color: ColorsManager.mainGreen,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      content: const Text(
+                                          'Are you sure you want to delete this apartment?'),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                                color: ColorsManager.mainGreen),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text('Delete',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: ColorsManager.red)),
+                                          onPressed: () {
+                                            context
+                                                .read<
+                                                    DeleteOwnerApartmentCubit>()
+                                                .deleteApartment(apartment.id);
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               );
             } else if (state is GetOwnerApartmentsFailure) {
               return Center(
