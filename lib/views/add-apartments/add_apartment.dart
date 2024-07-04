@@ -9,6 +9,8 @@ import 'package:graduation/theming/colors_manager.dart';
 import 'package:graduation/views/add-apartments/cubit/add_apartment_cubit.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../mutual_widgets/show_custom_dialog.dart';
+
 class AddApartmentView extends StatelessWidget {
   const AddApartmentView({super.key});
 
@@ -18,8 +20,11 @@ class AddApartmentView extends StatelessWidget {
       child: BlocConsumer<AddApartmentCubit, AddApartmentState>(
         listener: (context, state) {
           if (state is AddApartmentSuccess) {
-            showCustomSnackbar(context, 'Success, your apartment added',
-                ColorsManager.mainGreen);
+            showCustomDialog(
+              context,
+              'Success, your apartment is now awaiting approval. The result will be sent to your email',
+              ColorsManager.mainGreen,
+            );
           } else if (state is AddApartmentFailure) {
             showCustomSnackbar(context, state.errorMessage, ColorsManager.red);
           }

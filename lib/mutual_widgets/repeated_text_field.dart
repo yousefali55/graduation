@@ -44,3 +44,56 @@ class RepeatedTextFormField extends StatelessWidget {
     );
   }
 }
+
+class PasswordTextFormField extends StatefulWidget {
+  final TextEditingController controller;
+
+  const PasswordTextFormField({
+    super.key,
+    required this.controller,
+  });
+
+  @override
+  _PasswordTextFormFieldState createState() => _PasswordTextFormFieldState();
+}
+
+class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
+  bool _hide = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      obscureText: _hide,
+      controller: widget.controller,
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.key),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _hide ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () {
+            setState(() {
+              _hide = !_hide;
+            });
+          },
+        ),
+        contentPadding: const EdgeInsets.all(17),
+        hintText: 'Enter password',
+        hintStyle: GoogleFonts.sora(
+          color: const Color.fromARGB(128, 36, 52, 67),
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: ColorsManager.darkGrey, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide:
+              const BorderSide(color: ColorsManager.mainGreen, width: 1),
+        ),
+      ),
+    );
+  }
+}

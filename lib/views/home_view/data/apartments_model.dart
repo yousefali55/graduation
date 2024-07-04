@@ -40,6 +40,7 @@ class ApartmentModel {
   final String ownerUsername;
   final String ownerPhoneNumber;
   final String ownerEmail;
+  final String status;
   final String title;
   final String titleEn;
   final String? titleAr;
@@ -65,6 +66,7 @@ class ApartmentModel {
     required this.ownerUsername,
     required this.ownerPhoneNumber,
     required this.ownerEmail,
+    required this.status,
     required this.title,
     required this.titleEn,
     this.titleAr,
@@ -99,6 +101,7 @@ class ApartmentModel {
       ownerUsername: json['owner_username'],
       ownerPhoneNumber: json['owner_phone_number'],
       ownerEmail: json['owner_email'],
+      status: json['status'],
       title: json['title'],
       titleEn: json['title_en'],
       titleAr: json['title_ar'],
@@ -130,6 +133,7 @@ class ApartmentModel {
       'owner_username': ownerUsername,
       'owner_phone_number': ownerPhoneNumber,
       'owner_email': ownerEmail,
+      'status': status,
       'title': title,
       'title_en': titleEn,
       'title_ar': titleAr,
@@ -156,6 +160,7 @@ class ApartmentModel {
     String? ownerUsername,
     String? ownerPhoneNumber,
     String? ownerEmail,
+    String? status,
     String? title,
     String? titleEn,
     String? titleAr,
@@ -181,6 +186,7 @@ class ApartmentModel {
       ownerUsername: ownerUsername ?? this.ownerUsername,
       ownerPhoneNumber: ownerPhoneNumber ?? this.ownerPhoneNumber,
       ownerEmail: ownerEmail ?? this.ownerEmail,
+      status: status ?? this.status,
       title: title ?? this.title,
       titleEn: titleEn ?? this.titleEn,
       titleAr: titleAr ?? this.titleAr,

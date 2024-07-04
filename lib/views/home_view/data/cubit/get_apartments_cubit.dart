@@ -25,8 +25,10 @@ class GetApartmentsCubit extends Cubit<GetApartmentsState> {
           options: Options(headers: {'Authorization': 'Token $token'}));
       if (response.statusCode == 200) {
         final responseData = response.data['results'] as List;
-        apartments =
-            responseData.map((json) => ApartmentModel.fromJson(json)).toList();
+        apartments = responseData
+            .map((json) => ApartmentModel.fromJson(json))
+            .where((apartment) => apartment.status != "pending")
+            .toList();
         await fetchFavorites(token);
         emit(
             GetApartmentsSuccess(apartments: apartments, favorites: favorites));

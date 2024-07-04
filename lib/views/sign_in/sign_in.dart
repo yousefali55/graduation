@@ -121,10 +121,7 @@ class SignInScreen extends StatelessWidget {
                                   .usernameController,
                             ),
                             heightSpace(25),
-                            RepeatedTextFormField(
-                              icon: const Icon(Icons.key),
-                              hide: true,
-                              hintText: 'Enter password',
+                            PasswordTextFormField(
                               controller: context
                                   .read<SignInEmailCubit>()
                                   .passwordController,
